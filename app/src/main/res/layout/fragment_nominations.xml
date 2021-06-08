@@ -6,15 +6,96 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.main.Nominations">
 
+
     <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:src="@drawable/appbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_marginBottom="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/relativeLayout">
+
+        <Button
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:background="@drawable/like_button"
+            android:text="i"
+            android:textSize="30dp"
+            android:textColor="@color/white"
+            android:src="@drawable/ic_like"
+            android:layout_marginRight="15dp"
+            />
+
+        <ImageButton
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:background="@drawable/like_button"
+            android:padding="18dp"
+            android:src="@drawable/ic_like"
+            android:layout_marginRight="15dp"
+            app:tint="@color/white" />
+
+        <ImageButton
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/like_button"
+            android:padding="18dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_messages"
+            app:tint="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/relativeLayout"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:paddingVertical="27dp"
+        android:paddingHorizontal="15dp"
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        android:layout_marginTop="400dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.6">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/profile_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jenna Feranandez"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Obsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielife " />
+
+        </LinearLayout>
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
