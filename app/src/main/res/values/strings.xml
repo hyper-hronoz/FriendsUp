@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">FriendsUp</string>
+    <string name="JWTToken">JWTToken</string>
+    <string name="genderMan">M</string>
+    <string name="genderWoman">W</string>
+    <string name="JWTTokenSharedPreferencesKey">JWTToken</string>
+    <string name="userSharedPreferencesKey">userKey</string>
+    <string name="userData">userData</string>
+    <string name="userName">username</string>
+    <string name="userInfo">userInfo</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="imageSharedPreferences">imageSharedPreferences</string>
+    <string name="likedSharedPreferences">likedSharedPreferences</string>
+    <string name="liked">liked</string>
+
+
+    <string-array name="messages_persons">
+        <item>Cat</item>
+        <item>Dog</item>
+        <item>Elephant</item>
+        <item>Hydra</item>
+    </string-array>
+
+    <string-array name="messages">
+        <item>random message</item>
+    </string-array>
+</resources>

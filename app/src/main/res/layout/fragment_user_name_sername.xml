@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.registration.UserNameSername">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:padding="40dp"
+        android:gravity="center"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/name_sername_heading"
+            android:text="What's your name?"
+            style="@style/heading"
+            android:textColor="@color/dark"
+            android:layout_marginBottom="43dp"
+            />
+
+
+        <EditText
+            android:id="@+id/name_edit_text"
+            android:hint="Name"
+            android:layout_below="@+id/name_sername_heading"
+            style="@style/registration_login_edit_text"
+            android:layout_marginBottom="16dp"
+             />
+
+        <EditText
+            android:hint="Last name"
+            android:id="@+id/sername_edit_text"
+            android:layout_below="@+id/name_edit_text"
+            style="@style/registration_login_edit_text"
+            android:layout_marginBottom="43dp"
+            />
+
+        <Button
+            android:id="@+id/confirm_sername_name"
+            style="@style/registration_button"
+            android:layout_below="@+id/sername_edit_text"
+            android:background="@drawable/login_sign_up_button_filled"
+            android:visibility="visible"
+            android:text="Next"
+            android:textColor="@color/white" />
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>

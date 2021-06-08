@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="heading">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="registration_button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
+    <style name="registration_login_edit_text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/edit_text_login_sign_up</item>
+        <item name="android:paddingLeft">20dp</item>
+    </style>
+    <!--    <style name="gender_heading_textView">-->
+<!--        <item name="android:layout_width">wrap_content</item>-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="android:layout_marginTop">68dp</item>-->
+<!--        <item name="android:fontFamily">@font/nunito_semibold</item>-->
+<!--        <item name="android:textColor">@color/white</item>-->
+<!--        <item name="android:textSize">33sp</item>-->
+<!--    </style>-->
+
+<!--    <style name="gender_select_icons">-->
+<!--        <item name="android:layout_height">258dp</item>-->
+<!--        <item name="android:layout_width">258dp</item>-->
+<!--        <item name="android:padding">10dp</item>-->
+<!--        <item name="android:background">@android:color/transparent</item>-->
+<!--    </style>-->
+
+<!--    <style name="gender_confirm_button">-->
+<!--        <item name="android:textSize">20dp</item>-->
+<!--        <item name="android:textColor">@color/black</item>-->
+<!--        <item name="android:typeface">monospace</item>-->
+<!--        <item name="android:paddingVertical" tools:targetApi="o">10dp</item>-->
+<!--        <item name="android:paddingHorizontal" tools:targetApi="o">86dp</item>-->
+<!--        <item name="android:fontFamily">@font/nunito_semibold</item>-->
+<!--        <item name="android:layout_width">wrap_content</item>-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="android:background">@drawable/gender_confirm_button_gradient</item>-->
+<!--    </style>-->
+
+<!--    <style name="activity_heading">-->
+<!--        <item name="android:textSize">33sp</item>-->
+<!--        <item name="android:layout_height">150dp</item>-->
+<!--        <item name="android:layout_width">wrap_content</item>-->
+<!--        <item name="android:fontFamily">@font/nunito_semibold</item>-->
+<!--        <item name="android:textColor">@color/white</item>-->
+<!--        <item name="android:layout_gravity">center_horizontal</item>-->
+<!--        <item name="android:gravity">left|center_vertical</item>-->
+<!--    </style>-->
+
+<!--    <style name="input_label">-->
+<!--        <item name="android:textSize">17sp</item>-->
+<!--        <item name="fontFamily">@font/nunito_regular</item>-->
+<!--        <item name="android:layout_width">wrap_content</item>-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="android:layout_alignParentStart">true</item>-->
+<!--        <item name="android:layout_alignParentLeft">true</item>-->
+<!--        <item name="android:layout_alignParentTop">true</item>-->
+<!--    </style>-->
+
+<!--    <style name="input">-->
+<!--        <item name="android:layout_width">match_parent</item>-->
+<!--        <item name="android:layout_height">60dp</item>-->
+<!--        <item name="android:layout_alignParentTop">true</item>-->
+<!--        <item name="android:layout_alignParentEnd">true</item>-->
+<!--        <item name="android:layout_alignParentRight">true</item>-->
+<!--        <item name="android:layout_marginBottom">40dp</item>-->
+<!--    </style>-->
+
+<!--    <style name="radio">-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="android:layout_width">wrap_content</item>-->
+<!--        <item name="android:textColor">@color/black</item>-->
+<!--        <item name="android:layout_marginRight">30dp</item>-->
+<!--    </style>-->
+
+<!--    <style name="login_registrate_button" parent="gender_confirm_button">-->
+<!--        <item name="android:background">@drawable/login_regirstrate_button_background_boy</item>-->
+<!--        <item name="android:textColor">@color/white</item>-->
+<!--        <item name="android:layout_gravity">center</item>-->
+<!--    </style>-->
+
+<!--    <style name="navigation_button">-->
+<!--        <item name="android:layout_width">47dp</item>-->
+<!--        <item name="android:layout_height">47dp</item>-->
+<!--        <item name="android:scaleType">centerInside</item>-->
+<!--        <item name="android:background">#00ffffff</item>-->
+<!--    </style>-->
+
+<!--    <style name="view_nomination_icon" parent="navigation_button">-->
+<!--        <item name="android:layout_width">37dp</item>-->
+<!--        <item name="android:layout_height">37dp</item>-->
+<!--        <item name="android:layout_marginRight">30dp</item>-->
+<!--    </style>-->
+
+<!--    <style name="fill_form_edit_text">-->
+<!--        <item name="android:paddingLeft">10dp</item>-->
+<!--        <item name="android:layout_height">40dp</item>-->
+<!--        <item name="android:layout_width">match_parent</item>-->
+<!--        <item name="android:background">@drawable/fill_form_edit_text</item>-->
+<!--    </style>-->
+
+<!--    <style name="social_icons">-->
+<!--        <item name="android:layout_height">40dp</item>-->
+<!--        <item name="android:layout_width">40dp</item>-->
+<!--        <item name="android:layout_marginRight">20dp</item>-->
+<!--        <item name="android:scaleType">fitCenter</item>-->
+<!--    </style>-->
+
+
+</resources>

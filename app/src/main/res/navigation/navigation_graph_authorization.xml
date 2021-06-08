@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/loginSignUpFragment">
+
+    <fragment
+        android:id="@+id/loginSignUpFragment"
+        android:name="com.example.friendsup.fragments.LoginSignUpFragment"
+        android:label="fragment_login_sign_up"
+        tools:layout="@layout/fragment_login_sign_up" >
+        <action
+            android:id="@+id/action_loginSignUpFragment_to_userNameSername"
+            app:destination="@id/userNameSername" />
+        <action
+            android:id="@+id/action_loginSignUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userNameSername"
+        android:name="com.example.friendsup.fragments.registration.UserNameSername"
+        android:label="fragment_user_name_sername"
+        tools:layout="@layout/fragment_user_name_sername" >
+        <action
+            android:id="@+id/action_userNameSername_to_userEmail"
+            app:destination="@id/userEmail" />
+        <action
+            android:id="@+id/action_userNameSername_to_loginSignUpFragment"
+            app:destination="@id/loginSignUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userEmail"
+        android:name="com.example.friendsup.fragments.registration.UserEmail"
+        android:label="fragment_user_email"
+        tools:layout="@layout/fragment_user_email" >
+        <action
+            android:id="@+id/action_userEmail_to_userPassword"
+            app:destination="@id/userPassword" />
+        <action
+            android:id="@+id/action_userEmail_to_userNameSername"
+            app:destination="@id/userNameSername" />
+    </fragment>
+    <fragment
+        android:id="@+id/userPassword"
+        android:name="com.example.friendsup.fragments.registration.UserPassword"
+        android:label="fragment_user_password"
+        tools:layout="@layout/fragment_user_password" >
+        <action
+            android:id="@+id/action_userPassword_to_userEmail"
+            app:destination="@id/userEmail" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.friendsup.fragments.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_loginSignUpFragment"
+            app:destination="@id/loginSignUpFragment" />
+    </fragment>
+</navigation>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_sign_up"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_sign_up_background"
+    tools:context=".fragments.LoginSignUpFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:padding="40dp"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/welcomeText"
+            android:layout_marginBottom="43dp"
+            app:srcCompat="@drawable/_198" />
+
+        <TextView
+            android:id="@+id/welcomeText"
+            android:text="Welcome to FriedsUp"
+            android:layout_above="@+id/signUpButton"
+            android:textColor="@color/white"
+            android:layout_marginBottom="43dp"
+            android:textSize="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/signUpButton"
+            android:layout_above="@+id/loginButton"
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/login_sign_up_button_none_filled"
+            android:text="Sign up "
+            style="@style/registration_button"
+            android:textColor="@color/blue"
+            app:backgroundTint="#FFFFFF" />
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_above="@+id/terms"
+            android:layout_marginBottom="27dp"
+            style="@style/registration_button"
+            android:background="@drawable/login_sign_up_button_filled"
+            android:text="Login"
+            android:textColor="@color/white"
+            app:backgroundTint="#00FFFFFF" />
+
+        <TextView
+            android:id="@+id/terms"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:text="By tapping Continue, Create account, I agree to Company's
+Terms of Service, Payments Terms of Service, Privacy Policy,
+and Non-discrimination Policy."
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+
+
+</FrameLayout>
