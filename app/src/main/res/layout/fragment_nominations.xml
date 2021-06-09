@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/userAvatar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:layout_marginBottom="18dp"
-        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        app:layout_constraintBottom_toTopOf="@+id/userScrollView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/relativeLayout">
+        app:layout_constraintStart_toStartOf="@+id/userScrollView">
 
         <Button
             android:layout_width="63dp"
@@ -34,6 +34,7 @@
             android:background="@drawable/like_button"
             android:text="i"
             android:textSize="30dp"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:src="@drawable/ic_like"
             android:layout_marginRight="15dp"
@@ -59,11 +60,11 @@
             app:tint="@color/white" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/relativeLayout"
+    <ScrollView
+        android:id="@+id/userScrollView"
         android:layout_height="0dp"
-        android:background="@color/white"
-        android:paddingVertical="27dp"
+        android:background="@drawable/nominations_bottom_layout"
+        android:paddingTop="27dp"
         android:paddingHorizontal="15dp"
         android:layout_width="0dp"
         android:orientation="vertical"
@@ -72,7 +73,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/userAvatar"
         app:layout_constraintVertical_bias="0.6">
 
         <LinearLayout
@@ -92,10 +93,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Obsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielife " />
+shopping on weekends and loveee food #foodielife Obsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
+shopping on weekends and loveee food #foodielife" />
 
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
