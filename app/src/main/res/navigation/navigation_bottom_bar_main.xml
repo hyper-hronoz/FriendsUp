@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/bottom_navigation_home"
-        android:name="com.example.friendsup.fragments.main.Home"
+        android:name="com.example.friendsup.fragments.main.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/bottom_navigation_search"
-        android:name="com.example.friendsup.fragments.main.Nominations"
+        android:name="com.example.friendsup.fragments.main.NominationsFragment"
         android:label="fragment_nominations"
         tools:layout="@layout/fragment_nominations" >
         <action
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/bottom_navigation_notifications"
-        android:name="com.example.friendsup.fragments.main.Notifications"
+        android:name="com.example.friendsup.fragments.main.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" >
         <action

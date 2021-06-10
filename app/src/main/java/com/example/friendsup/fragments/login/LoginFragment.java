@@ -1,6 +1,7 @@
 package com.example.friendsup.fragments.login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.friendsup.API.JSONPlaceHolderApi;
+import com.example.friendsup.MainActivity;
 import com.example.friendsup.R;
 import com.example.friendsup.models.NetworkServiceResponse;
 import com.example.friendsup.models.User;
@@ -107,6 +109,9 @@ public class LoginFragment extends Fragment {
                     Log.d("JWT toke from login", jwt);
                     editor.putString(getString(R.string.JWTToken), jwt);
                     editor.commit();
+                    Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                    getActivity().finish();
+                    startActivity(intent);
                 }
             }
 

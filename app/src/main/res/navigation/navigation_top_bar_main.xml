@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/messanger"
-        android:name="com.example.friendsup.fragments.main.Messanger"
+        android:name="com.example.friendsup.fragments.main.MessangerFragment"
         android:label="fragment_messanger"
         tools:layout="@layout/fragment_messanger" />
 </navigation>

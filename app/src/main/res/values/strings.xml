@@ -13,6 +13,7 @@
     <string name="imageSharedPreferences">imageSharedPreferences</string>
     <string name="likedSharedPreferences">likedSharedPreferences</string>
     <string name="liked">liked</string>
+    <string name="userRegistration">userRegistration</string>
 
 
     <string-array name="messages_persons">

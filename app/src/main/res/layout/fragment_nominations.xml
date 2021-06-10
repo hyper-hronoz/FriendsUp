@@ -1,129 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:weightSum="100"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.main.Nominations">
-
+    tools:context=".fragments.main.NominationsFragment">
 
     <ImageView
         android:id="@+id/userAvatar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/appbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:layout_marginBottom="18dp"
-        app:layout_constraintBottom_toTopOf="@+id/userScrollView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/userScrollView">
+        android:layout_gravity="top"
+        android:background="@drawable/appbar"
+        android:scaleType="centerCrop" />
 
-        <Button
-            android:layout_width="63dp"
-            android:layout_height="63dp"
-            android:background="@drawable/like_button"
-            android:text="i"
-            android:textSize="30dp"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:src="@drawable/ic_like"
-            android:layout_marginRight="15dp"
-            />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <ImageButton
-            android:layout_width="63dp"
-            android:layout_height="63dp"
-            android:background="@drawable/like_button"
-            android:padding="18dp"
-            android:src="@drawable/ic_like"
-            android:layout_marginRight="15dp"
-            app:tint="@color/white" />
 
-        <ImageButton
-            android:layout_width="63dp"
-            android:layout_height="63dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/like_button"
-            android:padding="18dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_messages"
-            app:tint="@color/white" />
-    </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/userScrollView"
-        android:layout_height="0dp"
-        android:background="@drawable/nominations_bottom_layout"
-        android:paddingTop="27dp"
-        android:paddingHorizontal="15dp"
-        android:layout_width="0dp"
-        android:orientation="vertical"
-        android:layout_marginTop="400dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/userAvatar"
-        app:layout_constraintVertical_bias="0.6">
+        <ScrollView
+            android:id="@+id/userScrollView"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/nominations_bottom_layout"
+            android:orientation="vertical"
+            android:paddingHorizontal="15dp"
+            android:paddingTop="27dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_button_layout">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/profile_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loading..."
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/profile_about"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loading..." />
+
+            </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
+            android:id="@+id/profile_button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="right"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:layout_width="63dp"
+                android:layout_height="63dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/like_button"
+                android:padding="18dp"
+                android:src="@drawable/ic_info"
+                app:tint="@color/white" />
+
+            <ImageButton
+                android:layout_width="63dp"
+                android:layout_height="63dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/like_button"
+                android:padding="18dp"
+                android:src="@drawable/ic_like"
+                app:tint="@color/white" />
+
+            <ImageButton
+                android:layout_width="63dp"
+                android:layout_height="63dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/like_button"
+                android:padding="18dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_messages"
+                app:tint="@color/white" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="-24dp" />
 
-            <TextView
-                android:id="@+id/profile_heading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Jenna Feranandez"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Obsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielife Obsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielifeObsessed with Fahim MD's YouTube channel, love to go
-shopping on weekends and loveee food #foodielife" />
-
-        </LinearLayout>
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

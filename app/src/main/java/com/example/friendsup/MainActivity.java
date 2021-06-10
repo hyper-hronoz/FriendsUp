@@ -2,26 +2,37 @@ package com.example.friendsup;
 
 import android.app.Notification;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.friendsup.fragments.main.Home;
-import com.example.friendsup.fragments.main.Nominations;
-import com.example.friendsup.fragments.main.Notifications;
+import com.example.friendsup.fragments.main.HomeFragment;
+import com.example.friendsup.fragments.main.NominationsFragment;
+import com.example.friendsup.fragments.main.NotificationsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends BaseActivity {
     private BottomNavigationView bottomNavigationView;
     private Notification.Action.Builder NavOptions;
+
+    private void logout() {
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.commit();
+
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        finish();
+        startActivity(intent);
+    }
 
     private void showPopupMenu(View v) {
         PopupMenu popupMenu = new PopupMenu(this, v);
@@ -33,13 +44,9 @@ public class MainActivity extends BaseActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.top_menu_profile_settings:
-                                Toast.makeText(getApplicationContext(),
-                                        "Вы выбрали PopupMenu 1",
-                                        Toast.LENGTH_SHORT).show();
+
                             case R.id.top_menu_profile_logout:
-                                Toast.makeText(getApplicationContext(),
-                                        "Вы выбрали PopupMenu 3",
-                                        Toast.LENGTH_SHORT).show();
+                                logout();
                         }
                         return true;
                     }
@@ -48,8 +55,7 @@ public class MainActivity extends BaseActivity {
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
             public void onDismiss(PopupMenu menu) {
-                Toast.makeText(getApplicationContext(), "onDismiss",
-                        Toast.LENGTH_SHORT).show();
+
             }
         });
         popupMenu.show();
@@ -82,7 +88,7 @@ public class MainActivity extends BaseActivity {
 
             BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new Home()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new HomeFragment()).commit();
 
             BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod = new BottomNavigationView.OnNavigationItemSelectedListener() {
                 private String currentFragment = "HOME";
@@ -104,7 +110,7 @@ public class MainActivity extends BaseActivity {
                                     R.anim.fragment_exit_animation_from_left_to_right
                             );
                             this.currentFragment = "HOME";
-                            fragment = new Home();
+                            fragment = new HomeFragment();
                             break;
 
                         case R.id.bottom_navigation_search:
@@ -126,7 +132,7 @@ public class MainActivity extends BaseActivity {
                                 );
                             }
                             this.currentFragment = "NOMINATIONS";
-                            fragment = new Nominations();
+                            fragment = new NominationsFragment();
                             break;
 
                         case R.id.bottom_navigation_notifications:
@@ -138,7 +144,7 @@ public class MainActivity extends BaseActivity {
                                     R.anim.fragment_exit_animation_from_left_to_right
                             );
                             this.currentFragment = "NOTIFICATIONS";
-                            fragment = new Notifications();
+                            fragment = new NotificationsFragment();
                             break;
                     }
 

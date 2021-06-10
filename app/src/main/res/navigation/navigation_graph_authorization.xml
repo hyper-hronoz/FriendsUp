@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/userNameSername"
-        android:name="com.example.friendsup.fragments.registration.UserNameSername"
+        android:name="com.example.friendsup.fragments.registration.UserNameSernameFragment"
         android:label="fragment_user_name_sername"
         tools:layout="@layout/fragment_user_name_sername" >
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/userEmail"
-        android:name="com.example.friendsup.fragments.registration.UserEmail"
+        android:name="com.example.friendsup.fragments.registration.UserEmailFragment"
         android:label="fragment_user_email"
         tools:layout="@layout/fragment_user_email" >
         <action
@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/userPassword"
-        android:name="com.example.friendsup.fragments.registration.UserPassword"
+        android:name="com.example.friendsup.fragments.registration.UserPasswordFragment"
         android:label="fragment_user_password"
         tools:layout="@layout/fragment_user_password" >
         <action
