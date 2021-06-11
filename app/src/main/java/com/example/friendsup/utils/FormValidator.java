@@ -28,6 +28,8 @@ public class FormValidator {
     private String musntContainsNumbers;
     private String emptyMessage;
     private String incorrectEmail;
+    private String mustContainsNumbers;
+    private boolean isShowIncorrect = true;
 
     public void setColor(String color) {
         this.color = color;
@@ -39,6 +41,21 @@ public class FormValidator {
         this.formValue = editText.getText().toString().trim();
         this.context = context;
         this.editText = editText;
+        this.min = 8;
+        this.max = 99;
+        this.isUpperCase = false;
+        this.isSpecialSymbols = false;
+        this.isNumber = false;
+        this.isLetters = false;
+        this.formName = formName;
+        updateMessages();
+        isEmpty();
+    }
+
+
+    public FormValidator(Context context, String formName) {
+        this.formValue = editText.getText().toString().trim();
+        this.context = context;
         this.min = 8;
         this.max = 99;
         this.isUpperCase = false;
@@ -64,6 +81,12 @@ public class FormValidator {
         this.musntContainsNumbers = "field must not contains numbers";
         this.incorrectEmail = "field is not contains email";
         this.emptyMessage = "field is empty";
+        this.mustContainsNumbers = "field must contains numbers";
+    }
+
+    public FormValidator isStrokeIncorrect(boolean v) {
+        this.isShowIncorrect = v;
+        return this;
     }
 
     public FormValidator isValidLength() {
@@ -91,11 +114,15 @@ public class FormValidator {
     }
 
     public FormValidator isContainsNumbers() {
+        if (!this.formValue.matches(".*[0-9].*")) {
+            this.showError(editText, formName, this.mustContainsNumbers);
+            this.isValid = false;
+        }
         return this;
     }
 
     public FormValidator isNotContainsNumbers() {
-        if (this.formValue.matches(".*\\\\d.*")) {
+        if (this.formValue.matches(".*[0-9].*")) {
             this.showError(editText, formName, this.musntContainsNumbers);
             this.isValid = false;
         }
@@ -123,6 +150,13 @@ public class FormValidator {
     }
 
     public void showError(EditText editText, String formName, String message) {
+        Toast.makeText(this.context, "Incorrect field " + formName + " " + message, Toast.LENGTH_LONG).show();
+        if (isShowIncorrect) {
+            editText.setBackgroundResource(R.drawable.edit_text_error);
+        }
+    }
+
+    public void showError(String formName, String message) {
         editText.setBackgroundResource(R.drawable.edit_text_error);
         Toast.makeText(this.context, "Incorrect field " + formName + " " + message, Toast.LENGTH_LONG).show();
     }

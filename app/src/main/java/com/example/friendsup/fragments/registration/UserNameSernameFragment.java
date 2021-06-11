@@ -76,7 +76,7 @@ public class UserNameSernameFragment extends Fragment {
         if (!(new FormValidator(getActivity().getApplicationContext(), this.nameEditText, "name").setMin(2).isValidLength().isNotContainsNumbers().isLetters().commit())) {
             isValid = false;
         }
-        if (!(new FormValidator(getActivity().getApplicationContext(), this.lastNameEditText, "lastname")).setMin(2).isValidLength().isContainsNumbers().isLetters().commit()) {
+        if (!(new FormValidator(getActivity().getApplicationContext(), this.lastNameEditText, "lastname")).setMin(2).isValidLength().isNotContainsNumbers().isLetters().commit()) {
             isValid = false;
         }
         return isValid;
