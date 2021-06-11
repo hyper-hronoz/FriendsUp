@@ -1,5 +1,7 @@
 package com.example.friendsup.fragments.registration;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.friendsup.R;
+import com.example.friendsup.models.User;
 import com.example.friendsup.utils.FormValidator;
+import com.google.gson.Gson;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,7 +68,19 @@ public class UserEmailFragment extends Fragment {
 
     private void validateEmail(View v) {
         if (new FormValidator(getActivity().getApplicationContext(), this.email_edit_text, "email").isValidEmail().commit()) {
-            Navigation.findNavController(v).navigate(R.id.userPassword);
+            SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.userRegistration), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            String jsonUser = sharedPref.getString(getString(R.string.userRegistration), "");
+            if (jsonUser != "") {
+                Gson gson = new Gson();
+                User user = gson.fromJson(jsonUser, User.class);
+                user.setEmail(this.email_edit_text.getText().toString());
+                editor.putString(getString(R.string.userRegistration), gson.toJson(user));
+                editor.commit();
+                Navigation.findNavController(v).navigate(R.id.userPassword);
+            } else {
+                Navigation.findNavController(v).navigate(R.id.userNameSername);
+            }
         }
     }
 

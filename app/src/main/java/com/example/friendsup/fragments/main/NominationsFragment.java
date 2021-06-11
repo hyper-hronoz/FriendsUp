@@ -160,10 +160,10 @@ public class NominationsFragment extends Fragment {
         this.nominationHeadingTextView = (TextView) v.findViewById(R.id.profile_heading);
         this.nominationAboutTextView = (TextView) v.findViewById(R.id.profile_about);
 
-        this.nominationPhoto.setBackgroundResource(R.drawable._default_photo);
+        this.nominationPhoto.setBackgroundResource(R.drawable.default_photo);
         this.profileButtonLayout = (LinearLayout) v.findViewById(R.id.profile_button_layout);
 
-        compressScrollViewHeight();
+//        compressScrollViewHeight();
 //        this.constraintLayout = (ConstraintLayout) getActivity().findViewById(R.id.nomination_constraint);
 
         v.setOnTouchListener(new OnSwipeTouchListener(getActivity().getApplicationContext()) {
@@ -174,11 +174,11 @@ public class NominationsFragment extends Fragment {
 
         this.nominationPhoto.setOnTouchListener(new OnSwipeTouchListener(getActivity().getApplicationContext()) {
             public void onSwipeTop() {
-                hideProfileImage();
+//                hideProfileImage();
             }
 
             public void onSwipeBottom() {
-                 showProfileImage();
+                 // showProfileImage();
             }
         });
 ////
@@ -188,7 +188,7 @@ public class NominationsFragment extends Fragment {
             }
 
             public void onSwipeTop() {
-                hideProfileImage();
+//                hideProfileImage();
             }
         });
 

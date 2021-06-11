@@ -35,8 +35,6 @@ public class UserNameSernameFragment extends Fragment {
     private String mParam2;
     private EditText lastNameEditText;
     private EditText nameEditText;
-    private String lastName;
-    private String name;
     private Button buttonNext;
 
     public UserNameSernameFragment() {
@@ -83,11 +81,12 @@ public class UserNameSernameFragment extends Fragment {
     }
 
     public void saveNameAndLastName(View v) {
-        User user = new User(this.name + " " + this.lastName);
-        SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
+        User user = new User(this.nameEditText.getText().toString() + " " + this.lastNameEditText.getText().toString());
+        SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.userRegistration), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Gson gson = new Gson();
         String userJSON = gson.toJson(user);
+        System.out.println(userJSON);
         editor.putString(getString(R.string.userRegistration), userJSON);
         editor.commit();
         Navigation.findNavController(v).navigate(R.id.userEmail);

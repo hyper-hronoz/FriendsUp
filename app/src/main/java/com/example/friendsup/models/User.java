@@ -9,6 +9,8 @@ public class User {
     public String password;
     @SerializedName("gender")
     public String gender;
+    @SerializedName("email")
+    public String email;
 
     public User(String username, String password, String gender) {
         this.username = username;
@@ -38,11 +40,18 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.username = email;
+        this.email = email;
+    }
+
+    public User(String username, String password, String gender, String email) {
+        this.username = username;
+        this.password = password;
+        this.gender = gender;
+        this.email = email;
     }
 
     public String getEmail() {
-        return username;
+        return email;
     }
 
     public void setPassword(String password) {

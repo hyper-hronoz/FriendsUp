@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/welcomeText"
             android:layout_marginBottom="43dp"
-            app:srcCompat="@drawable/_198" />
+            app:srcCompat="@drawable/logo" />
 
         <TextView
             android:id="@+id/welcomeText"
