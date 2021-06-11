@@ -27,6 +27,7 @@ public class FormValidator {
     private boolean isValid = true;
     private String musntContainsNumbers;
     private String emptyMessage;
+    private String incorrectEmail;
 
     public void setColor(String color) {
         this.color = color;
@@ -61,6 +62,7 @@ public class FormValidator {
         this.lengthMessages = "incorrect string length min: " + this.min + (this.max > this.min && this.max != 0 ? " max: " + this.max : "");
         this.lettersMessage = "field must includes letter characters";
         this.musntContainsNumbers = "field must not contains numbers";
+        this.incorrectEmail = "field is not contains email";
         this.emptyMessage = "field is empty";
     }
 
@@ -81,7 +83,7 @@ public class FormValidator {
     }
 
     public FormValidator isLetters() {
-        if (!(this.formValue.matches(".*[a-zA-Z].*"))) {
+        if (!(this.formValue.matches(".*[a-zA-ZА-Яа-я].*"))) {
             this.showError(editText, formName, this.lettersMessage);
             this.isValid = false;
         }
@@ -95,6 +97,15 @@ public class FormValidator {
     public FormValidator isNotContainsNumbers() {
         if (this.formValue.matches(".*\\\\d.*")) {
             this.showError(editText, formName, this.musntContainsNumbers);
+            this.isValid = false;
+        }
+        return this;
+    }
+
+    public FormValidator isValidEmail() {
+        String regex = "^(.+)@(.+)$";
+        if (!this.formValue.matches(regex)) {
+            this.showError(editText, formName, this.incorrectEmail);
             this.isValid = false;
         }
         return this;

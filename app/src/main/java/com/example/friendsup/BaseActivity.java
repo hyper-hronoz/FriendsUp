@@ -1,11 +1,9 @@
 package com.example.friendsup;
 
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -15,24 +13,24 @@ import androidx.appcompat.app.AppCompatActivity;
 public class BaseActivity extends AppCompatActivity  {
     // паказывает нижнее меню когда приложение открыто
     public static TextView activityHeading;
-
-    public void keyBoardStateChangeListener() {
-        getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        Rect r = new Rect();
-                        getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
-                        int screenHeight = getWindow().getDecorView().getRootView().getHeight();
-                        int keypadHeight = screenHeight - r.bottom;
-                        if (keypadHeight > screenHeight * 0.15) {
-                            showBottomNavBar();
-                        } else {
-                            hideSystemUI();
-                        }
-                    }
-                });
-    }
+//
+//    public void keyBoardStateChangeListener() {
+//        getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(
+//                new ViewTreeObserver.OnGlobalLayoutListener() {
+//                    @Override
+//                    public void onGlobalLayout() {
+//                        Rect r = new Rect();
+//                        getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
+//                        int screenHeight = getWindow().getDecorView().getRootView().getHeight();
+//                        int keypadHeight = screenHeight - r.bottom;
+//                        if (keypadHeight > screenHeight * 0.15) {
+//                            showBottomNavBar();
+//                        } else {
+//                            hideSystemUI();
+//                        }
+//                    }
+//                });
+//    }
 
 //    @Override
 //    public void onWindowFocusChanged(boolean hasFocus) {
@@ -96,6 +94,6 @@ public class BaseActivity extends AppCompatActivity  {
 //        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         hideSystemUI();
-        keyBoardStateChangeListener();
+//        keyBoardStateChangeListener();
     }
 }

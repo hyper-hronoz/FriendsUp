@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.friendsup.R;
 import com.example.friendsup.models.User;
@@ -62,6 +64,7 @@ public class UserNameSernameFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -79,7 +82,7 @@ public class UserNameSernameFragment extends Fragment {
         return isValid;
     }
 
-    public void saveNameAndLastName() {
+    public void saveNameAndLastName(View v) {
         User user = new User(this.name + " " + this.lastName);
         SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -87,6 +90,7 @@ public class UserNameSernameFragment extends Fragment {
         String userJSON = gson.toJson(user);
         editor.putString(getString(R.string.userRegistration), userJSON);
         editor.commit();
+        Navigation.findNavController(v).navigate(R.id.userEmail);
     }
 
 
@@ -95,7 +99,10 @@ public class UserNameSernameFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.fragment_user_name_sername, container, false);
 
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
         this.nameEditText = (EditText) v.findViewById(R.id.name_edit_text);
+
         this.lastNameEditText = (EditText) v.findViewById(R.id.sername_edit_text);
 
         this.buttonNext = (Button) v.findViewById(R.id.confirm_sername_name);
@@ -104,11 +111,10 @@ public class UserNameSernameFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (isFormValid()) {
-                    saveNameAndLastName();
+                    saveNameAndLastName(v);
                 }
             }
         });
-
 
         return v;
     }

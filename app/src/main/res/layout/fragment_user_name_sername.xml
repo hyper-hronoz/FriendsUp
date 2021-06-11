@@ -6,9 +6,9 @@
     tools:context=".fragments.registration.UserNameSernameFragment">
 
     <RelativeLayout
+        android:gravity="center"
         android:layout_width="match_parent"
         android:padding="40dp"
-        android:gravity="center"
         android:layout_height="match_parent">
 
 
