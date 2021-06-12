@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.friendsup.fragments.main.HomeFragment;
 import com.example.friendsup.fragments.main.NominationsFragment;
 import com.example.friendsup.fragments.main.NotificationsFragment;
+import com.example.friendsup.fragments.main.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends BaseActivity {
@@ -43,10 +45,14 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.top_menu_profile_settings:
+                            case R.id.profile:
+                                Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_LONG).show();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new ProfileFragment()).commit();
+                                break;
 
                             case R.id.top_menu_profile_logout:
                                 logout();
+                                break;
                         }
                         return true;
                     }

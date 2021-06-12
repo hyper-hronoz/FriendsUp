@@ -24,10 +24,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="15dp"
         android:gravity="right"
         app:layout_constraintBottom_toBottomOf="@+id/userAvatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+
+        <ImageButton
+            android:id="@+id/edit_button"
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/like_button"
+            android:visibility="gone"
+            android:padding="18dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_edit"
+            app:tint="@color/white" />
 
         <ImageButton
             android:layout_width="63dp"
@@ -48,6 +62,7 @@
             app:tint="@color/white" />
 
         <ImageButton
+            android:id="@+id/message_button"
             android:layout_width="63dp"
             android:layout_height="63dp"
             android:layout_marginRight="15dp"
@@ -55,6 +70,18 @@
             android:padding="18dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_messages"
+            app:tint="@color/white" />
+
+        <ImageButton
+            android:id="@+id/camera_button"
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/like_button"
+            android:padding="18dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_camera"
+            android:visibility="gone"
             app:tint="@color/white" />
 
     </LinearLayout>
@@ -67,7 +94,7 @@
         android:background="@drawable/nominations_bottom_layout"
         android:orientation="vertical"
         android:paddingHorizontal="15dp"
-        android:layout_marginTop="15dp"
+        android:paddingTop="27dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -96,6 +123,47 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <ScrollView
+        android:elevation="200dp"
+        android:id="@+id/userScrollViewEdit"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:paddingTop="27dp"
+        android:layout_height="0dp"
+        android:background="@drawable/nominations_bottom_layout"
+        android:orientation="vertical"
+        android:paddingHorizontal="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userAvatar"
+        app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/profile_heading_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loading..."
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/profile_about_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="Loading..." />
+
+        </LinearLayout>
+    </ScrollView>
+
 
 
 

@@ -45,7 +45,7 @@ public class LoginFragment extends Fragment {
     private String mParam2;
     private EditText loginEditText;
     private EditText passwordEditText;
-    private String login;
+    private String email;
     private String password;
     private Button loginButton;
 
@@ -82,10 +82,10 @@ public class LoginFragment extends Fragment {
 
     private void login() {
 
-        this.login = this.loginEditText.getText().toString();
+        this.email = this.loginEditText.getText().toString();
         this.password = this.passwordEditText.getText().toString();
 
-        User user = new User(this.login, this.password);
+        User user = new User(this.email, this.password);
 
         Retrofit retrofit = new NetworkAction().initializeRetrofit();
 
