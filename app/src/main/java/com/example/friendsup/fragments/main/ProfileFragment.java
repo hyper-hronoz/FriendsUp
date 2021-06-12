@@ -12,11 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -24,6 +28,7 @@ import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.R;
 import com.example.friendsup.models.RegisteredUser;
 import com.example.friendsup.repository.NetworkAction;
+import com.example.friendsup.utils.KeyboardUtils;
 import com.google.gson.GsonBuilder;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -68,6 +73,8 @@ public class ProfileFragment extends Fragment {
     private String part_image;
     private TextView nominationHeadingTextView;
     private TextView nominationAboutTextView;
+    private EditText nominationHeadingEditText;
+    private EditText nominationAboutEditText;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -113,6 +120,10 @@ public class ProfileFragment extends Fragment {
         this.defaultScrollView.setVisibility(View.GONE);
         this.editScrollView.setVisibility(View.VISIBLE);
         this.cameraButton.setVisibility(View.VISIBLE);
+
+        this.nominationHeadingEditText.setText(this.nominationHeadingTextView.getText().toString());
+        this.nominationAboutEditText.setText(this.nominationAboutTextView.getText().toString());
+
     }
 
     private void switchToDefaultMode() {
@@ -120,6 +131,11 @@ public class ProfileFragment extends Fragment {
         this.defaultScrollView.setVisibility(View.VISIBLE);
         this.editScrollView.setVisibility(View.GONE);
         this.cameraButton.setVisibility(View.GONE);
+
+        this.nominationHeadingEditText.setText(this.nominationHeadingEditText.getText().toString());
+        this.nominationAboutTextView.setText(this.nominationAboutEditText.getText().toString());
+
+        updateCurrentData();
     }
 
     @Override
@@ -145,7 +161,8 @@ public class ProfileFragment extends Fragment {
 
                     this.uploadProfileImage(file);
 
-                    this.profileImage.setImageBitmap(bitmap);
+                    this.saveImageToGallery(bitmap);
+                    this.getProfileImageFromGallery();
 
                     System.out.println("file lenght is: " + file.length());
                 } catch (IOException e) {
@@ -156,6 +173,30 @@ public class ProfileFragment extends Fragment {
                 Log.e("error ->", String.valueOf(error));
             }
         }
+    }
+
+    private void getProfileImageFromGallery() {
+        SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.userProfileImage), Context.MODE_PRIVATE);
+        String uriString = sharedPref.getString(getString(R.string.userProfileImage), "");
+        if (uriString != "") {
+            this.profileImage.setImageURI(Uri.parse(uriString));
+        }
+    }
+
+    private void saveImageToGallery(Bitmap bitmap) {
+        String savedImageURL = MediaStore.Images.Media.insertImage(
+                getActivity().getContentResolver(),
+                bitmap,
+                "Bird",
+                "Image of bird"
+        );
+
+        Uri savedImageURI = Uri.parse(savedImageURL);
+
+        SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.userProfileImage), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.userProfileImage), String.valueOf(savedImageURI));
+        editor.commit();
     }
 
     private void uploadProfileImage(File file) {
@@ -182,6 +223,39 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFailure(Call call, Throwable t) {
                 System.out.println("error " + t.getMessage());
+                Toast.makeText(getActivity().getApplicationContext(), "Server connection error check your internet connection and try again later", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateCurrentData() {
+        RegisteredUser registeredUser = new RegisteredUser(this.nominationHeadingEditText.getText().toString());
+        registeredUser.setAbout(this.nominationAboutEditText.getText().toString());
+        sendNewUserData(registeredUser);
+    }
+
+    private void sendNewUserData(RegisteredUser registeredUser) {
+        Retrofit retrofit = new NetworkAction().initializeRetrofit();
+
+        JSONPlaceHolderApi jsonPlaceHolderApi = new NetworkAction().initializeApi(retrofit);
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
+
+        String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
+
+        Call<RegisteredUser> call = jsonPlaceHolderApi.updateCurrentUserData("Bearer " + JWTToken, registeredUser);
+
+        call.enqueue(new Callback<RegisteredUser>() {
+            @Override
+            public void onResponse(Call<RegisteredUser> call, Response<RegisteredUser> response) {
+                System.out.println("Ok");
+                Log.d("Search response body is", new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<RegisteredUser> call, Throwable t) {
+                System.out.println("error " + t.getMessage());
+                makeRequestUserData(jsonPlaceHolderApi, JWTToken);
             }
         });
     }
@@ -195,6 +269,10 @@ public class ProfileFragment extends Fragment {
 
         String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
 
+        makeRequestUserData(jsonPlaceHolderApi, JWTToken);
+    }
+
+    private void makeRequestUserData(JSONPlaceHolderApi jsonPlaceHolderApi, String JWTToken) {
         Call<RegisteredUser> call = jsonPlaceHolderApi.getCurrentUserData("Bearer " + JWTToken);
 
         call.enqueue(new Callback<RegisteredUser>() {
@@ -208,13 +286,16 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFailure(Call<RegisteredUser> call, Throwable t) {
                 System.out.println("error " + t.getMessage());
+                makeRequestUserData(jsonPlaceHolderApi, JWTToken);
             }
         });
     }
 
     private void setCurrentUserData(RegisteredUser registeredUser) {
         this.nominationHeadingTextView.setText(registeredUser.getUsername());
-        this.nominationAboutTextView.setText(registeredUser.getAboutUser());
+        this.nominationAboutTextView.setText(registeredUser.getAbout());
+        this.nominationHeadingEditText.setText(registeredUser.getUsername());
+        this.nominationAboutEditText.setText(registeredUser.getAbout());
 
         try {
             Glide.with(getActivity().getApplicationContext()).load(registeredUser.getUserPhoto()).into(this.profileImage);
@@ -228,10 +309,29 @@ public class ProfileFragment extends Fragment {
         Intent intent = CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setMultiTouchEnabled(true)
-                .setAspectRatio(16, 9)
+                .setAspectRatio(16, 12)
                 .getIntent(getContext());
         startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }
+
+
+//    public void keyBoardStateChangeListener() {
+//        getActivity().getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(
+//                new ViewTreeObserver.OnGlobalLayoutListener() {
+//                    @Override
+//                    public void onGlobalLayout() {
+//                        Rect r = new Rect();
+//                        getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
+//                        int screenHeight = getActivity().getWindow().getDecorView().getRootView().getHeight();
+//                        int keypadHeight = screenHeight - r.bottom;
+//                        if (keypadHeight > screenHeight * 0.15) {
+//                            Toast.makeText(getActivity().getApplicationContext(), "Open", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Toast.makeText(getActivity().getApplicationContext(), "Closed", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//    }
 
 
     @Override
@@ -250,8 +350,10 @@ public class ProfileFragment extends Fragment {
         this.profileImage = (ImageView) v.findViewById(R.id.userAvatar);
         this.nominationHeadingTextView = (TextView) v.findViewById(R.id.profile_heading);
         this.nominationAboutTextView = (TextView) v.findViewById(R.id.profile_about);
+        this.nominationHeadingEditText = (EditText) v.findViewById(R.id.profile_heading_edit);
+        this.nominationAboutEditText = (EditText) v.findViewById(R.id.profile_about_edit);
 
-
+        this.getProfileImageFromGallery();
         this.getCurrentUserData();
 
         this.cameraButton.setOnClickListener(new View.OnClickListener() {
@@ -267,6 +369,29 @@ public class ProfileFragment extends Fragment {
                 switchEditMode();
             }
         });
+
+        KeyboardUtils.addKeyboardToggleListener(getActivity(), new KeyboardUtils.SoftKeyboardToggleListener() {
+            @Override
+            public void onToggleSoftKeyboard(boolean isVisible) {
+                if (isEditMode) {
+                    ConstraintLayout constraintLayout = v.findViewById(R.id.main_constraint_nomination);
+                    ConstraintSet constraintSet = new ConstraintSet();
+                    constraintSet.clone(constraintLayout);
+                    constraintSet.connect(R.id.userScrollViewEdit,ConstraintSet.TOP,R.id.main_constraint_nomination,ConstraintSet.TOP,0);
+                    constraintSet.applyTo(constraintLayout);
+                }
+                if (!isVisible && isEditMode){
+                    ConstraintLayout constraintLayout = v.findViewById(R.id.main_constraint_nomination);
+                    ConstraintSet constraintSet = new ConstraintSet();
+                    constraintSet.clone(constraintLayout);
+                    constraintSet.connect(R.id.userScrollViewEdit,ConstraintSet.TOP,R.id.userAvatar,ConstraintSet.BOTTOM,0);
+                    constraintSet.applyTo(constraintLayout);
+                }
+            }
+        });
+
+//        keyBoardStateChangeListener();
+
 //        this.editButton
 
         return v;

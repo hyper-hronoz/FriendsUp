@@ -8,7 +8,7 @@ public class RegisteredUser extends User  {
 
     public String hairColor;
     public String eyesColor;
-    public String aboutUser;
+    public String about;
     public String userPhoto;
     public String instagramProfile;
     public String facebookProfile;
@@ -23,9 +23,9 @@ public class RegisteredUser extends User  {
         this.userLiked = userLiked;
     }
 
-    public RegisteredUser(String aboutUser, int age, String eyesColor, String hairColor, int height, String userPhoto, String username, String vkProfile, String facebookProfile, String instagramProfile, List<String> userLiked) {
+    public RegisteredUser(String about, int age, String eyesColor, String hairColor, int height, String userPhoto, String username, String vkProfile, String facebookProfile, String instagramProfile, List<String> userLiked) {
         super(username);
-        this.aboutUser = aboutUser;
+        this.about = about;
         this.age = age;
         this.eyesColor = eyesColor;
         this.hairColor = hairColor;
@@ -37,6 +37,9 @@ public class RegisteredUser extends User  {
         this.userLiked = userLiked;
     }
 
+    public RegisteredUser(String username) {
+        super(username);
+    }
 
     public RegisteredUser(String username, String password, String gender) {
         super(username, password, gender);
@@ -66,9 +69,9 @@ public class RegisteredUser extends User  {
         return vkProfile;
     }
 
-    public RegisteredUser(String username, int age, String hairColor, String eyesColor, String aboutUser, String userPhoto, String instagramProfile, String facebookProfile, String vkProfile) {
+    public RegisteredUser(String username, int age, String hairColor, String eyesColor, String about, String userPhoto, String instagramProfile, String facebookProfile, String vkProfile) {
         super(username);
-        this.aboutUser = aboutUser;
+        this.about = about;
         this.hairColor = hairColor;
         this.eyesColor = eyesColor;
         this.userPhoto = userPhoto;
@@ -93,8 +96,8 @@ public class RegisteredUser extends User  {
         this.eyesColor = eyesColor;
     }
 
-    public void setAboutUser(String aboutUser) {
-        this.aboutUser = aboutUser;
+    public void setAbout(String about) {
+        this.about = about;
     }
 
     public void setUserPhoto(String userPhoto) {
@@ -117,8 +120,8 @@ public class RegisteredUser extends User  {
         return eyesColor;
     }
 
-    public String getAboutUser() {
-        return aboutUser;
+    public String getAbout() {
+        return about;
     }
 
     public String getUserPhoto() {

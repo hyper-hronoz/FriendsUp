@@ -12,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 
 public interface JSONPlaceHolderApi {
@@ -24,8 +25,8 @@ public interface JSONPlaceHolderApi {
     @GET("/user-data/user")
     Call<RegisteredUser> getCurrentUserData(@Header("Authorization") String token);
 
-//    @PUT("/auth/user")
-//    Call<RegisteredUser> updateUserData(@Header("Authorization") String token, @Body RegisteredUser registeredUser);
+    @PUT("/user-data/user")
+    Call<RegisteredUser> updateCurrentUserData(@Header("Authorization") String token, @Body RegisteredUser registeredUser);
 //
 //    @POST("/auth/upload")
 //    Call<UploadImage> postImage(@Header("Authorization") String token, @Body UploadImage uploadImage);

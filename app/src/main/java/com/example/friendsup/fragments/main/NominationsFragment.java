@@ -131,7 +131,7 @@ public class NominationsFragment extends Fragment {
 
     private void setCurrentUserData(RegisteredUser registeredUser) {
         this.nominationHeadingTextView.setText(registeredUser.getUsername());
-        this.nominationAboutTextView.setText(registeredUser.getAboutUser());
+        this.nominationAboutTextView.setText(registeredUser.getAbout());
 
         try {
             Glide.with(getActivity().getApplicationContext()).load(registeredUser.getUserPhoto()).into(this.nominationPhoto);

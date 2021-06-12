@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:id="@+id/main_constraint_nomination"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,9 +13,8 @@
         android:id="@+id/userAvatar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/default_photo"
         android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintDimensionRatio="16:12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -91,7 +91,7 @@
         android:id="@+id/userScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/nominations_bottom_layout"
+        android:background="@color/white"
         android:orientation="vertical"
         android:paddingHorizontal="15dp"
         android:paddingTop="27dp"
@@ -119,6 +119,7 @@
                 android:id="@+id/profile_about"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text="Loading..." />
 
         </LinearLayout>
@@ -150,15 +151,22 @@
                 android:id="@+id/profile_heading_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_profile"
                 android:text="Loading..."
                 android:textSize="16dp"
+                android:minEms="5"
+                android:hint="What is your name?"
                 android:textStyle="bold" />
 
             <EditText
+                android:layout_marginTop="20dp"
                 android:id="@+id/profile_about_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_profile"
                 android:textSize="14dp"
+                android:minEms="5"
+                android:hint="Write a little about yourself"
                 android:text="Loading..." />
 
         </LinearLayout>
