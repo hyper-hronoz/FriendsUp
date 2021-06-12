@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -36,6 +38,8 @@ public class UserNameSernameFragment extends Fragment {
     private EditText lastNameEditText;
     private EditText nameEditText;
     private Button buttonNext;
+    private RadioGroup selectGenderRadioGroup;
+    private String gender = null;
 
     public UserNameSernameFragment() {
         // Required empty public constructor
@@ -70,6 +74,7 @@ public class UserNameSernameFragment extends Fragment {
     }
 
     public boolean isFormValid() {
+        System.out.println("gender is : " + this.gender);
         boolean isValid = true;
         if (!(new FormValidator(getActivity().getApplicationContext(), this.nameEditText, "name").setMin(2).isValidLength().isNotContainsNumbers().isLetters().commit())) {
             isValid = false;
@@ -77,11 +82,16 @@ public class UserNameSernameFragment extends Fragment {
         if (!(new FormValidator(getActivity().getApplicationContext(), this.lastNameEditText, "lastname")).setMin(2).isValidLength().isNotContainsNumbers().isLetters().commit()) {
             isValid = false;
         }
+        if ((this.gender == null || this.gender == "")) {
+            Toast.makeText(getActivity().getApplicationContext(), "You must select gender to continue", Toast.LENGTH_LONG).show();
+            isValid = false;
+        }
         return isValid;
     }
 
-    public void saveNameAndLastName(View v) {
+    public void saveFromData(View v) {
         User user = new User(this.nameEditText.getText().toString() + " " + this.lastNameEditText.getText().toString());
+        user.setGender(this.gender);
         SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.userRegistration), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Gson gson = new Gson();
@@ -92,6 +102,9 @@ public class UserNameSernameFragment extends Fragment {
         Navigation.findNavController(v).navigate(R.id.userEmail);
     }
 
+    private void setGender(String gender) {
+        this.gender = gender;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -106,11 +119,34 @@ public class UserNameSernameFragment extends Fragment {
 
         this.buttonNext = (Button) v.findViewById(R.id.confirm_sername_name);
 
+
+        this.selectGenderRadioGroup = (RadioGroup) v.findViewById(R.id.select_gender_radio_group);
+
+        this.selectGenderRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case -1:
+                        break;
+                    case R.id.radio_men:
+                        setGender("M");
+                        break;
+                    case R.id.radio_women:
+                        setGender("W");
+                        break;
+                    case R.id.radio_other:
+                        setGender("O");
+                        break;
+                }
+            }
+        });
+
         this.buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isFormValid()) {
-                    saveNameAndLastName(v);
+                    saveFromData(v);
                 }
             }
         });

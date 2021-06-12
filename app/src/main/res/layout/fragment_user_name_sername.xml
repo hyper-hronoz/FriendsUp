@@ -34,20 +34,64 @@
             android:id="@+id/sername_edit_text"
             android:layout_below="@+id/name_edit_text"
             style="@style/registration_login_edit_text"
-            android:layout_marginBottom="43dp"
+            android:layout_marginBottom="24dp"
             />
+
+
+        <TextView
+            android:id="@+id/gender_heading"
+            style="@style/heading"
+            android:layout_below="@+id/sername_edit_text"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="8dp"
+            android:text="Select gender"
+            android:textColor="@color/dark" />
+
+        <RadioGroup
+            android:id="@+id/select_gender_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gender_heading"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="43dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_men"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:text="Men" />
+
+            <RadioButton
+                android:id="@+id/radio_women"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:text="Women" />
+
+            <RadioButton
+                android:id="@+id/radio_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:text="Other" />
+        </RadioGroup>
 
         <Button
             android:id="@+id/confirm_sername_name"
             style="@style/registration_button"
-            android:layout_below="@+id/sername_edit_text"
+            android:layout_below="@+id/select_gender_radio_group"
             android:background="@drawable/login_sign_up_button_filled"
-            android:visibility="visible"
             android:text="Next"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="visible" />
 
 
     </RelativeLayout>
+
 
 
 </FrameLayout>

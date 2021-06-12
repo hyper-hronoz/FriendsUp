@@ -113,22 +113,20 @@ public class NominationsFragment extends Fragment {
             public void onResponse(Call<RegisteredUser> call, Response<RegisteredUser> response) {
                 Log.d("Search status code is", String.valueOf(response.code()));
                 Log.d("Search response body is", new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
-                if (response.code() == 401) {
-
+                if (response.code() == 200) {
+                    setCurrentUserData(response.body());
                 } else if (response.code() == 500) {
                     Toast.makeText(getContext(), "User cannot be found internal server error", Toast.LENGTH_SHORT).show();
                 } else {
-                    setCurrentUserData(response.body());
                 }
             }
 
             @Override
             public void onFailure(Call<RegisteredUser> call, Throwable t) {
                 Log.e("Search nominat error", t.getMessage());
-                getRandomUser();
+                Toast.makeText(getActivity().getApplicationContext(), "Connection error", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void setCurrentUserData(RegisteredUser registeredUser) {
@@ -191,7 +189,6 @@ public class NominationsFragment extends Fragment {
 //                hideProfileImage();
             }
         });
-
 
         getRandomUser();
 

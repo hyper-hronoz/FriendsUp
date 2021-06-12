@@ -1,7 +1,9 @@
 package com.example.friendsup.fragments.main;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,10 +15,16 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.R;
+import com.example.friendsup.models.RegisteredUser;
+import com.example.friendsup.repository.NetworkAction;
+import com.google.gson.GsonBuilder;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -24,6 +32,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +66,8 @@ public class ProfileFragment extends Fragment {
     private Uri selectedImage;
     private Uri uri;
     private String part_image;
+    private TextView nominationHeadingTextView;
+    private TextView nominationAboutTextView;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -104,70 +122,6 @@ public class ProfileFragment extends Fragment {
         this.cameraButton.setVisibility(View.GONE);
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        //super method removed
-//        if (requestCode == 1 && resultCode == RESULT_OK) {
-//            this.selectedImage = data.getData();
-//            String[] imageprojection = {MediaStore.Images.Media.DATA};
-//            Cursor cursor = getActivity().getContentResolver().query(this.selectedImage,imageprojection,null,null,null);
-//
-//            if (cursor != null)
-//            {
-//                cursor.moveToFirst();
-//                int indexImage = cursor.getColumnIndex(imageprojection[0]);
-//                this.part_image = cursor.getString(indexImage);
-//
-//                if(this.part_image != null)
-//                {
-//                    File image = new File(part_image);
-////                    this.uploadProfilePhoto.setImageBitmap(BitmapFactory.decodeFile(image.getAbsolutePath()));
-//                    System.out.println("File length: " + image.length());
-//                    this.profileImage.setImageURI(this.selectedImage);
-//                }
-//            }
-//        }
-//    }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-////            if (resultCode == RESULT_OK) {
-//                Uri resultUri = result.getUri();
-//            System.out.println("URI: " + resultUri);
-////            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-////                Exception error = result.getError();
-////            }
-//        }
-//    }
-
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-//            Uri imageuri = CropImage.getPickImageResultUri(getActivity(), data);
-//            System.out.println(imageuri);
-//            if (CropImage.isReadExternalStoragePermissionsRequired(getActivity(), imageuri)) {
-//                uri = imageuri;
-//                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-//            } else {
-//                System.out.println("Image uri " + uri);
-//                startCrop(imageuri);
-//            }
-//        }
-//
-//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-////            if (requestCode == RESULT_OK) {
-////                .setImage
-////            }
-//            this.profileImage.setImageURI(result.getUri());
-//
-//        }
-//    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -177,31 +131,95 @@ public class ProfileFragment extends Fragment {
                 this.selectedImage = result.getUri();
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), this.selectedImage);
-                    File f = new File(getContext().getCacheDir(), "image");
-                    f.createNewFile();
+                    File file = new File(getContext().getCacheDir(), "image");
+                    file.createNewFile();
 
-//Convert bitmap to byte array
+                    //Convert bitmap to byte array
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
                     byte[] bitmapdata = bos.toByteArray();
-                    FileOutputStream fos = new FileOutputStream(f);
+                    FileOutputStream fos = new FileOutputStream(file);
                     fos.write(bitmapdata);
                     fos.flush();
                     fos.close();
 
+                    this.uploadProfileImage(file);
+
                     this.profileImage.setImageBitmap(bitmap);
 
-                    System.out.println("file lenght is: " + f.length());
+                    System.out.println("file lenght is: " + file.length());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
-//                this.profileImage.setImageURI(this.selectedImage);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
                 Log.e("error ->", String.valueOf(error));
             }
+        }
+    }
+
+    private void uploadProfileImage(File file) {
+
+        Retrofit retrofit = new NetworkAction().initializeRetrofit();
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part parts = MultipartBody.Part.createFormData("newimage", file.getName(), requestBody);
+
+        JSONPlaceHolderApi jsonPlaceHolderApi = new NetworkAction().initializeApi(retrofit);
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
+
+        String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
+
+        JSONPlaceHolderApi uploadApis = retrofit.create(JSONPlaceHolderApi.class);
+        Call call = uploadApis.uploadImage(parts, "Bearer " + JWTToken);
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                System.out.println("Ok");
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                System.out.println("error " + t.getMessage());
+            }
+        });
+    }
+
+    private void getCurrentUserData() {
+        Retrofit retrofit = new NetworkAction().initializeRetrofit();
+
+        JSONPlaceHolderApi jsonPlaceHolderApi = new NetworkAction().initializeApi(retrofit);
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
+
+        String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
+
+        Call<RegisteredUser> call = jsonPlaceHolderApi.getCurrentUserData("Bearer " + JWTToken);
+
+        call.enqueue(new Callback<RegisteredUser>() {
+            @Override
+            public void onResponse(Call<RegisteredUser> call, Response<RegisteredUser> response) {
+                System.out.println("Ok");
+                Log.d("Search response body is", new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
+                setCurrentUserData(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<RegisteredUser> call, Throwable t) {
+                System.out.println("error " + t.getMessage());
+            }
+        });
+    }
+
+    private void setCurrentUserData(RegisteredUser registeredUser) {
+        this.nominationHeadingTextView.setText(registeredUser.getUsername());
+        this.nominationAboutTextView.setText(registeredUser.getAboutUser());
+
+        try {
+            Glide.with(getActivity().getApplicationContext()).load(registeredUser.getUserPhoto()).into(this.profileImage);
+        } catch (Exception ex) {
+            Log.e("Exception", ex.toString());
         }
     }
 
@@ -230,6 +248,11 @@ public class ProfileFragment extends Fragment {
         this.messageButton.setVisibility(View.GONE);
         this.editButton.setVisibility(View.VISIBLE);
         this.profileImage = (ImageView) v.findViewById(R.id.userAvatar);
+        this.nominationHeadingTextView = (TextView) v.findViewById(R.id.profile_heading);
+        this.nominationAboutTextView = (TextView) v.findViewById(R.id.profile_about);
+
+
+        this.getCurrentUserData();
 
         this.cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,7 +268,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 //        this.editButton
-
 
         return v;
     }

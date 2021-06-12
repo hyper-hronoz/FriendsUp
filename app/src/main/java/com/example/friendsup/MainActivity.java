@@ -104,7 +104,6 @@ public class MainActivity extends BaseActivity {
 
                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-
                     switch (item.getItemId()) {
                         case R.id.bottom_navigation_home:
                             System.out.println(currentFragment);

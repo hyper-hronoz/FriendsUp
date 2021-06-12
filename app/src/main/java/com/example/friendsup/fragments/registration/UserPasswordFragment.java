@@ -1,8 +1,8 @@
 package com.example.friendsup.fragments.registration;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +16,6 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.friendsup.API.JSONPlaceHolderApi;
-import com.example.friendsup.MainActivity;
 import com.example.friendsup.R;
 import com.example.friendsup.models.NetworkServiceResponse;
 import com.example.friendsup.models.User;
@@ -133,9 +132,12 @@ public class UserPasswordFragment extends Fragment {
                         editor.putString(getString(R.string.JWTToken), jwt);
                         editor.commit();
 
-                        Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
-                        getActivity().finish();
-                        startActivity(intent);
+                        if (Build.VERSION.SDK_INT >= 11) {
+                            getActivity().recreate();
+                        } else {
+                            getActivity().finish();
+                            getActivity().startActivity(getActivity().getIntent());
+                        }
                     } else {
                     }
                 }
