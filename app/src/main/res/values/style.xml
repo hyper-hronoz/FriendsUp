@@ -22,7 +22,11 @@
         <item name="android:background">@drawable/edit_text_login_sign_up</item>
         <item name="android:paddingLeft">20dp</item>
     </style>
-    <!--    <style name="gender_heading_textView">-->
+
+    <style name="roundedImageViewRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>    <!--    <style name="gender_heading_textView">-->
 <!--        <item name="android:layout_width">wrap_content</item>-->
 <!--        <item name="android:layout_height">wrap_content</item>-->
 <!--        <item name="android:layout_marginTop">68dp</item>-->

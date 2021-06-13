@@ -8,6 +8,13 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.friendsup.R;
+import com.neovisionaries.ws.client.WebSocket;
+import com.neovisionaries.ws.client.WebSocketAdapter;
+import com.neovisionaries.ws.client.WebSocketFactory;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,9 +32,17 @@ public class NotificationsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public NotificationsFragment() {
-        // Required empty public constructor
+    WebSocket ws;
+
+    {
+        try {
+            ws = new WebSocketFactory().createSocket("ws://192.168.0.15:80/notifications");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
 
     /**
      * Use this factory method to create a new instance of
@@ -60,6 +75,23 @@ public class NotificationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notifications, container, false);
+        View v = inflater.inflate(R.layout.fragment_notifications, container, false);
+
+        System.out.println("Notification is opened");
+
+        ws.addListener(new WebSocketAdapter() {
+            @Override
+            public void onTextMessage(WebSocket websocket, String message) throws Exception {
+                System.out.println("web socket message: " + message);
+            }
+
+            @Override
+            public void onConnected(WebSocket websocket, Map<String, List<String>> headers) throws Exception {
+                super.onConnected(websocket, headers);
+                System.out.println("WebSocket connected");
+            }
+        });
+
+        return v;
     }
 }

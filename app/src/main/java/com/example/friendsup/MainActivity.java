@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.friendsup.fragments.main.HomeFragment;
+import com.example.friendsup.fragments.main.MessangerFragment;
 import com.example.friendsup.fragments.main.NominationsFragment;
 import com.example.friendsup.fragments.main.NotificationsFragment;
 import com.example.friendsup.fragments.main.ProfileFragment;
@@ -24,6 +26,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends BaseActivity {
     private BottomNavigationView bottomNavigationView;
     private Notification.Action.Builder NavOptions;
+    private ImageButton toolbarMessengerButton;
 
     private void logout() {
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
@@ -159,7 +162,14 @@ public class MainActivity extends BaseActivity {
 
             bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
 
+            this.toolbarMessengerButton = (ImageButton) findViewById(R.id.toolbar_navigation_messages);
 
+            this.toolbarMessengerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                      getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new MessangerFragment()).commit();
+                }
+            });
 //            NavController navController = Navigation.findNavController(this,  R.id.main_fragment_container);
 
 //            androidx.navigation.NavOptions.Builder navOptions = new NavOptions.Builder().setLaunchSingleTop(true).setEnterAnim(R.anim.android_animation_from_right_to_left);
