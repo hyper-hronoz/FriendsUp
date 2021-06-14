@@ -1,6 +1,7 @@
 package com.example.friendsup.fragments.main;
 
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -24,12 +26,16 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.friendsup.API.JSONPlaceHolderApi;
+import com.example.friendsup.MainActivity;
 import com.example.friendsup.R;
+import com.example.friendsup.models.NetworkServiceResponse;
 import com.example.friendsup.models.RegisteredUser;
 import com.example.friendsup.repository.NetworkAction;
 import com.example.friendsup.utils.OnSwipeTouchListener;
 import com.google.gson.GsonBuilder;
 
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +69,7 @@ public class NominationsFragment extends Fragment {
     private boolean isAnimated = false;
     private int screenHeight;
     private int screenWidth;
+    private ImageButton chatButton;
 
 
     public NominationsFragment() {
@@ -87,6 +94,11 @@ public class NominationsFragment extends Fragment {
         return fragment;
     }
 
+    public MainActivity activity;
+
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +110,7 @@ public class NominationsFragment extends Fragment {
 
     private void getRandomUser() {
         SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
+
         String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
 
         Retrofit retrofit = new NetworkAction().initializeRetrofit();
@@ -109,6 +122,8 @@ public class NominationsFragment extends Fragment {
         Call<RegisteredUser> call = jsonPlaceHolderApi.findUser("Bearer " + JWTToken);
 
         call.enqueue(new Callback<RegisteredUser>() {
+            private Context context = getActivity().getApplicationContext();
+
             @Override
             public void onResponse(Call<RegisteredUser> call, Response<RegisteredUser> response) {
                 Log.d("Search status code is", String.valueOf(response.code()));
@@ -116,7 +131,7 @@ public class NominationsFragment extends Fragment {
                 if (response.code() == 200) {
                     setCurrentUserData(response.body());
                 } else if (response.code() == 500) {
-                    Toast.makeText(getContext(), "User cannot be found internal server error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "User cannot be found internal server error", Toast.LENGTH_SHORT).show();
                 } else {
                 }
             }
@@ -124,12 +139,13 @@ public class NominationsFragment extends Fragment {
             @Override
             public void onFailure(Call<RegisteredUser> call, Throwable t) {
                 Log.e("Search nominat error", t.getMessage());
-                Toast.makeText(getActivity().getApplicationContext(), "Connection error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Connection error", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void setCurrentUserData(RegisteredUser registeredUser) {
+        System.out.println(registeredUser);
         this.nominationHeadingTextView.setText(registeredUser.getUsername());
         this.nominationAboutTextView.setText(registeredUser.getAbout());
 
@@ -138,6 +154,13 @@ public class NominationsFragment extends Fragment {
         } catch (Exception ex) {
             Log.e("Exception", ex.toString());
         }
+
+        this.chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startChat(registeredUser);
+            }
+        });
     }
 
     @Override
@@ -160,6 +183,8 @@ public class NominationsFragment extends Fragment {
 
         this.nominationPhoto.setBackgroundResource(R.drawable.default_photo);
         this.profileButtonLayout = (LinearLayout) v.findViewById(R.id.profile_button_layout);
+        this.chatButton = (ImageButton) v.findViewById(R.id.message_button);
+
 
 //        compressScrollViewHeight();
 //        this.constraintLayout = (ConstraintLayout) getActivity().findViewById(R.id.nomination_constraint);
@@ -194,6 +219,36 @@ public class NominationsFragment extends Fragment {
 
         return v;
         // Inflate the layout for this fragment
+    }
+
+    private void startChat(RegisteredUser registeredUser) {
+        Retrofit retrofit = new NetworkAction().initializeRetrofit();
+
+        SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
+
+        String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
+
+        System.out.println(JWTToken);
+
+        JSONPlaceHolderApi jsonPlaceHolderApi = new NetworkAction().initializeApi(retrofit);
+
+        Call<NetworkServiceResponse> call = jsonPlaceHolderApi.createChatRoom("Bearer " + JWTToken, registeredUser);
+
+        call.enqueue(new Callback<NetworkServiceResponse>() {
+            private Context context = getActivity().getApplicationContext();
+
+            @Override
+            public void onResponse(Call<NetworkServiceResponse> call, Response<NetworkServiceResponse> response) {
+                Toast.makeText(getActivity().getApplicationContext(), "All done", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<NetworkServiceResponse> call, Throwable t) {
+                Log.e("Search nominat error", t.getMessage());
+                Toast.makeText(context, "Connection error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void hideProfileImage() {

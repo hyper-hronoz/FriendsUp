@@ -215,6 +215,8 @@ public class ProfileFragment extends Fragment {
         JSONPlaceHolderApi uploadApis = retrofit.create(JSONPlaceHolderApi.class);
         Call call = uploadApis.uploadImage(parts, "Bearer " + JWTToken);
         call.enqueue(new Callback() {
+            private Context context = getActivity().getApplicationContext();
+
             @Override
             public void onResponse(Call call, Response response) {
                 System.out.println("Ok");
@@ -223,7 +225,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFailure(Call call, Throwable t) {
                 System.out.println("error " + t.getMessage());
-                Toast.makeText(getActivity().getApplicationContext(), "Server connection error check your internet connection and try again later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Server connection error check your internet connection and try again later", Toast.LENGTH_SHORT).show();
             }
         });
     }

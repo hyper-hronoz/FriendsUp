@@ -1,11 +1,15 @@
 package com.example.friendsup.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class RegisteredUser extends User  {
     public int age;
     public int height;
 
+    @SerializedName("_id")
+    public String id;
     public String hairColor;
     public String eyesColor;
     public String about;
@@ -78,6 +82,17 @@ public class RegisteredUser extends User  {
         this.instagramProfile = instagramProfile;
         this.facebookProfile = facebookProfile;
         this.vkProfile = vkProfile;
+    }
+
+    public RegisteredUser(String username, String about, String id, int age) {
+        super(username);
+        this.about = about;
+        this.id  = id;
+        this.age = age;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public void setAge(int age) {

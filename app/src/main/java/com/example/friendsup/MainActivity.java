@@ -78,6 +78,19 @@ public class MainActivity extends BaseActivity {
     };
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt("SelectedItemId", bottomNavigationView.getSelectedItemId());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        int selectedItemId = savedInstanceState.getInt("SelectedItemId");
+        this.bottomNavigationView.setSelectedItemId(selectedItemId);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -94,7 +107,7 @@ public class MainActivity extends BaseActivity {
 
             imageView.setOnClickListener(viewClickListener);
 
-            BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+            this.bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new HomeFragment()).commit();
 
@@ -160,7 +173,7 @@ public class MainActivity extends BaseActivity {
                 }
             };
 
-            bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
+            this.bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
 
             this.toolbarMessengerButton = (ImageButton) findViewById(R.id.toolbar_navigation_messages);
 

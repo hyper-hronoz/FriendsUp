@@ -40,6 +40,10 @@ public interface JSONPlaceHolderApi {
 //    @GET("/action/liked")
 //    Call<RegisteredUsers> getLikedUsers(@Header("Authorization") String token);
 //
+
+    @POST("/messages/room")
+    Call<NetworkServiceResponse> createChatRoom( @Header("Authorization") String token, @Body RegisteredUser registeredUser);
+
     @Multipart
     @POST("/user-data/upload-image")
     Call<RequestBody> uploadImage(@Part MultipartBody.Part part, @Header("Authorization") String token);
