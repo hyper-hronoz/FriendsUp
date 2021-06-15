@@ -114,10 +114,14 @@ public class MainActivity extends BaseActivity {
 
             this.bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new HomeFragment()).commit();
+            View view = bottomNavigationView.findViewById(R.id.bottom_navigation_search);
+
+            view.performClick();
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new NominationsFragment()).commit();
 
             BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod = new BottomNavigationView.OnNavigationItemSelectedListener() {
-                private String currentFragment = "HOME";
+                private String currentFragment = "MESSAGES";
 
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -126,7 +130,7 @@ public class MainActivity extends BaseActivity {
                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
                     switch (item.getItemId()) {
-                        case R.id.bottom_navigation_home:
+                        case R.id.bottom_navigation_messanger:
                             System.out.println(currentFragment);
                             fragmentTransaction.setCustomAnimations(
                                     R.anim.fragment_enter_animation_from_left_to_right,  // enter
@@ -134,9 +138,8 @@ public class MainActivity extends BaseActivity {
                                     R.anim.fragment_exit_animation_from_left_to_right,
                                     R.anim.fragment_exit_animation_from_left_to_right
                             );
-                            System.out.println("id: " + bottomNavigationView.getSelectedItemId());
-                            this.currentFragment = "HOME";
-                            fragment = new HomeFragment();
+                            this.currentFragment = "MESSAGES";
+                            fragment = new MessangerFragment();
                             break;
 
                         case R.id.bottom_navigation_search:
@@ -149,7 +152,7 @@ public class MainActivity extends BaseActivity {
                                         R.anim.fragment_exit_animation_from_right_to_left
                                 );
                             }
-                            if (currentFragment == "HOME") {
+                            if (currentFragment == "MESSAGES") {
                                 fragmentTransaction.setCustomAnimations(
                                         R.anim.fragment_enter_animation_from_right_to_left,  // enter
                                         R.anim.fragment_exit_animation_from_left_to_right,
@@ -157,6 +160,7 @@ public class MainActivity extends BaseActivity {
                                         R.anim.fragment_exit_animation_from_left_to_right
                                 );
                             }
+                            System.out.println("id: " + bottomNavigationView.getSelectedItemId());
                             this.currentFragment = "NOMINATIONS";
                             fragment = new NominationsFragment();
                             break;
@@ -180,15 +184,15 @@ public class MainActivity extends BaseActivity {
             };
 
             this.bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
-
-            this.toolbarMessengerButton = (ImageButton) findViewById(R.id.toolbar_navigation_messages);
-
-            this.toolbarMessengerButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                      getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new MessangerFragment()).commit();
-                }
-            });
+//
+//            this.toolbarMessengerButton = (ImageButton) findViewById(R.id.toolbar_navigation_messages);
+//
+//            this.toolbarMessengerButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                      getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new MessangerFragment()).commit();
+//                }
+//            });
 //            NavController navController = Navigation.findNavController(this,  R.id.main_fragment_container);
 
 //            androidx.navigation.NavOptions.Builder navOptions = new NavOptions.Builder().setLaunchSingleTop(true).setEnterAnim(R.anim.android_animation_from_right_to_left);

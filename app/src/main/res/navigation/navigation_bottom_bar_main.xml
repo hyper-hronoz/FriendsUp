@@ -3,26 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_bottom_bar_main"
-    app:startDestination="@id/bottom_navigation_home">
+    app:startDestination="@id/bottom_navigation_search">
 
-    <fragment
-        android:id="@+id/bottom_navigation_home"
-        android:name="com.example.friendsup.fragments.main.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_bottom_navigation_home_to_bottom_navigation_search"
-            app:destination="@id/bottom_navigation_search"
-            app:enterAnim="@anim/fragment_enter_animation_from_left_to_right"
-            app:exitAnim="@anim/fragment_enter_animation_from_right_to_left"
-            app:popEnterAnim="@anim/fragment_enter_animation_from_right_to_left" />
-        <action
-            android:id="@+id/action_bottom_navigation_home_to_bottom_navigation_notifications"
-            app:destination="@id/bottom_navigation_notifications"
-            app:enterAnim="@anim/fragment_enter_animation_from_left_to_right"
-            app:exitAnim="@anim/fragment_enter_animation_from_left_to_right"
-            app:popEnterAnim="@anim/fragment_enter_animation_from_left_to_right" />
-    </fragment>
     <fragment
         android:id="@+id/bottom_navigation_search"
         android:name="com.example.friendsup.fragments.main.NominationsFragment"
@@ -36,12 +18,8 @@
             app:popEnterAnim="@anim/fragment_enter_animation_from_right_to_left"
             app:popExitAnim="@anim/fragment_enter_animation_from_right_to_left" />
         <action
-            android:id="@+id/action_bottom_navigation_search_to_bottom_navigation_home"
-            app:destination="@id/bottom_navigation_home"
-            app:enterAnim="@anim/fragment_enter_animation_from_right_to_left"
-            app:exitAnim="@anim/fragment_enter_animation_from_right_to_left"
-            app:popEnterAnim="@anim/fragment_enter_animation_from_right_to_left"
-            app:popExitAnim="@anim/fragment_enter_animation_from_right_to_left" />
+            android:id="@+id/action_bottom_navigation_search_to_messangerFragment2"
+            app:destination="@id/bottom_navigation_messanger" />
     </fragment>
     <fragment
         android:id="@+id/bottom_navigation_notifications"
@@ -56,11 +34,19 @@
             app:popEnterAnim="@anim/fragment_enter_animation_from_right_to_left"
             app:popExitAnim="@anim/fragment_enter_animation_from_right_to_left" />
         <action
-            android:id="@+id/action_bottom_navigation_notifications_to_bottom_navigation_home"
-            app:destination="@id/bottom_navigation_home"
-            app:enterAnim="@anim/fragment_enter_animation_from_right_to_left"
-            app:exitAnim="@anim/fragment_enter_animation_from_right_to_left"
-            app:popEnterAnim="@anim/fragment_enter_animation_from_right_to_left"
-            app:popExitAnim="@anim/fragment_enter_animation_from_right_to_left" />
+            android:id="@+id/action_bottom_navigation_notifications_to_messangerFragment2"
+            app:destination="@id/bottom_navigation_messanger" />
+    </fragment>
+    <fragment
+        android:id="@+id/bottom_navigation_messanger"
+        android:name="com.example.friendsup.fragments.main.MessangerFragment"
+        android:label="fragment_messanger"
+        tools:layout="@layout/fragment_messanger" >
+        <action
+            android:id="@+id/action_messangerFragment2_to_bottom_navigation_search"
+            app:destination="@id/bottom_navigation_search" />
+        <action
+            android:id="@+id/action_messangerFragment2_to_bottom_navigation_notifications"
+            app:destination="@id/bottom_navigation_notifications" />
     </fragment>
 </navigation>
