@@ -1,8 +1,11 @@
 package com.example.friendsup.API;
 
+import com.example.friendsup.models.Chat;
 import com.example.friendsup.models.NetworkServiceResponse;
 import com.example.friendsup.models.RegisteredUser;
 import com.example.friendsup.models.User;
+
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -40,6 +43,9 @@ public interface JSONPlaceHolderApi {
 //    @GET("/action/liked")
 //    Call<RegisteredUsers> getLikedUsers(@Header("Authorization") String token);
 //
+
+    @GET("/messages/rooms")
+    Call<List<Chat>> getUsersChatRooms(@Header("Authorization") String token);
 
     @POST("/messages/room")
     Call<NetworkServiceResponse> createChatRoom( @Header("Authorization") String token, @Body RegisteredUser registeredUser);

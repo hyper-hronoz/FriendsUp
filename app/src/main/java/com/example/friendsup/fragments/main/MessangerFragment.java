@@ -1,19 +1,33 @@
 package com.example.friendsup.fragments.main;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.R;
+import com.example.friendsup.models.Chat;
 import com.example.friendsup.models.Contact;
+import com.example.friendsup.repository.NetworkAction;
 import com.example.friendsup.ui.ContactsAdapter;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +46,7 @@ public class MessangerFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private RecyclerView rvContacts;
 
     public MessangerFragment() {
         // Required empty public constructor
@@ -69,16 +84,57 @@ public class MessangerFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_messanger, container, false);
 //
-        RecyclerView rvContacts = (RecyclerView) v.findViewById(R.id.rvContacts);
+        this.rvContacts = (RecyclerView) v.findViewById(R.id.rvContacts);
 
-        ArrayList<Contact> contacts = Contact.createContactsList(20);
-        // Create adapter passing in the sample user data
-        ContactsAdapter adapter = new ContactsAdapter(contacts);
-        // Attach the adapter to the recyclerview to populate items
-        rvContacts.setAdapter(adapter);
-        // Set layout manager to position the items
-        rvContacts.setLayoutManager(new LinearLayoutManager(getActivity()));
+        getUserChats();
 
         return v;
+    }
+
+    private void setCurrentUserChatRooms(List<Chat> chats) {
+
+        // Create adapter passing in the sample user data
+        ContactsAdapter adapter = new ContactsAdapter(chats, getActivity());
+        // Attach the adapter to the recyclerview to populate items
+        this.rvContacts.setAdapter(adapter);
+        // Set layout manager to position the items
+        this.rvContacts.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        System.out.println(chats);
+    }
+
+    private void getUserChats() {
+
+        Retrofit retrofit = new NetworkAction().initializeRetrofit();
+
+        JSONPlaceHolderApi jsonPlaceHolderApi = new NetworkAction().initializeApi(retrofit);
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
+
+        String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
+
+        Call<List<Chat>> call = jsonPlaceHolderApi.getUsersChatRooms("Bearer " + JWTToken);
+
+        call.enqueue(new Callback<List<Chat>>() {
+            private Context context = getActivity().getApplicationContext();
+
+            @Override
+            public void onResponse(Call<List<Chat>> call, Response<List<Chat>> response) {
+                Log.d("Search status code is", String.valueOf(response.code()));
+                Log.d("Search response body is", new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
+                if (response.code() == 200) {
+                    setCurrentUserChatRooms(response.body());
+                } else if (response.code() == 500) {
+                    Toast.makeText(context, "User cannot be found internal server error", Toast.LENGTH_SHORT).show();
+                } else {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Chat>> call, Throwable t) {
+                Log.e("Search nominat error", t.getMessage());
+                Toast.makeText(context, "Connection error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

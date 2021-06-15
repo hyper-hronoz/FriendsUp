@@ -15,6 +15,7 @@
     <string name="liked">liked</string>
     <string name="userRegistration">userRegistration</string>
     <string name="userProfileImage">userProfileImage</string>
+    <string name="chatActivity">user-chat-activity-id</string>
 
 
     <string-array name="messages_persons">

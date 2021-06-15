@@ -80,14 +80,19 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putInt("SelectedItemId", bottomNavigationView.getSelectedItemId());
+        if (savedInstanceState != null && bottomNavigationView != null) {
+            savedInstanceState.putInt("SelectedItemId", bottomNavigationView.getSelectedItemId());
+        }
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        int selectedItemId = savedInstanceState.getInt("SelectedItemId");
-        this.bottomNavigationView.setSelectedItemId(selectedItemId);
+        if (savedInstanceState != null) {
+            int selectedItemId = savedInstanceState.getInt("SelectedItemId");
+            System.out.println("Selected id is:" + selectedItemId);
+            this.bottomNavigationView.setSelectedItemId(selectedItemId);
+        }
     }
 
     @Override
@@ -129,6 +134,7 @@ public class MainActivity extends BaseActivity {
                                     R.anim.fragment_exit_animation_from_left_to_right,
                                     R.anim.fragment_exit_animation_from_left_to_right
                             );
+                            System.out.println("id: " + bottomNavigationView.getSelectedItemId());
                             this.currentFragment = "HOME";
                             fragment = new HomeFragment();
                             break;
