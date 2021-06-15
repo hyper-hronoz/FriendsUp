@@ -11,12 +11,14 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendsup.models.BeginChat;
+import com.example.friendsup.models.Message;
 import com.example.friendsup.ui.MessageAdapter;
 import com.google.gson.Gson;
 
@@ -63,17 +65,24 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-//                    try {
+                    try {
+                        System.out.println("message recieved");
                         System.out.println(args[0]);
-//                        JSONObject jsonObject = new JSONObject(args[0]); jsonObject.put("isSent", false);
+
+                        Message message = new Gson().fromJson(String.valueOf(args[0]), Message.class);
+
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("isSent", false);
+                        jsonObject.put("name", message.getUsername());
+                        jsonObject.put("message", message.getMessage());
+
+                        messageAdapter.addItem(jsonObject);
+
+                        recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
 //
-//                        messageAdapter.addItem(jsonObject);
-//
-//                        recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
@@ -189,8 +198,9 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
 
         sendBtn.setOnClickListener(v -> {
 
-            JSONObject jsonObject = new JSONObject();
             try {
+                JSONObject jsonObject = new JSONObject();
+
                 jsonObject.put("userId", chatterId);
                 jsonObject.put("message", messageEdit.getText().toString());
 

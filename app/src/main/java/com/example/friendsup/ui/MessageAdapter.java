@@ -165,7 +165,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
             } else {
 
                 if (message.has("message")) {
-
+                    System.out.println(message.getString("name"));
                     ReceivedMessageHolder messageHolder = (ReceivedMessageHolder) holder;
                     messageHolder.nameTxt.setText(message.getString("name"));
                     messageHolder.messageTxt.setText(message.getString("message"));
