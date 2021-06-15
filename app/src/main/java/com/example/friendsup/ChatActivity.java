@@ -11,14 +11,14 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendsup.models.BeginChat;
-import com.example.friendsup.models.Message;
+import com.example.friendsup.models.ImageMessage;
+import com.example.friendsup.models.TextMessage;
 import com.example.friendsup.ui.MessageAdapter;
 import com.google.gson.Gson;
 
@@ -69,12 +69,19 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
                         System.out.println("message recieved");
                         System.out.println(args[0]);
 
-                        Message message = new Gson().fromJson(String.valueOf(args[0]), Message.class);
+                        TextMessage textMessage = new Gson().fromJson(String.valueOf(args[0]), TextMessage.class);
+                        ImageMessage imageMessage = new Gson().fromJson(String.valueOf(args[0]), ImageMessage.class);
 
-                        JSONObject jsonObject = new JSONObject();
+                        JSONObject jsonObject = new JSONObject(String.valueOf(args[0]));
+                        if (textMessage.getMessage() != null) {
+                            jsonObject.put("name", textMessage.getUsername());
+                            jsonObject.put("message", textMessage.getMessage());
+                        } else {
+                            jsonObject.put("name", imageMessage.getUsername());
+                            jsonObject.put("image", imageMessage.getImage());
+                        }
+
                         jsonObject.put("isSent", false);
-                        jsonObject.put("name", message.getUsername());
-                        jsonObject.put("message", message.getMessage());
 
                         messageAdapter.addItem(jsonObject);
 
@@ -241,6 +248,8 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
                 InputStream is = getContentResolver().openInputStream(data.getData());
                 Bitmap image = BitmapFactory.decodeStream(is);
 
+                System.out.println("Image: " + image);
+
                 sendImage(image);
 
             } catch (FileNotFoundException e) {
@@ -259,13 +268,15 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
         String base64String = Base64.encodeToString(outputStream.toByteArray(),
                 Base64.DEFAULT);
 
-        JSONObject jsonObject = new JSONObject();
+        System.out.println(base64String);
+
 
         try {
-            jsonObject.put("name", chatterId);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("userId", chatterId);
             jsonObject.put("image", base64String);
 
-            webSocket.send(jsonObject.toString());
+            socket.emit("message", jsonObject.toString());
 
             jsonObject.put("isSent", true);
 

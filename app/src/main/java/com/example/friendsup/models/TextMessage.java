@@ -1,10 +1,15 @@
 package com.example.friendsup.models;
 
-public class Message {
+import com.google.gson.annotations.SerializedName;
+
+public class TextMessage {
+    @SerializedName("message")
     public String message;
+    @SerializedName("username")
     public String username;
 
-    public Message(String message, String username) {
+
+    public TextMessage(String message, String username) {
         this.message = message;
         this.username = username;
     }
