@@ -3,6 +3,7 @@ package com.example.friendsup.fragments.main;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.friendsup.API.JSONPlaceHolderApi;
+import com.example.friendsup.ChatActivity;
 import com.example.friendsup.MainActivity;
 import com.example.friendsup.R;
 import com.example.friendsup.models.NetworkServiceResponse;
@@ -95,9 +97,6 @@ public class NominationsFragment extends Fragment {
     }
 
     public MainActivity activity;
-
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -240,6 +239,10 @@ public class NominationsFragment extends Fragment {
             @Override
             public void onResponse(Call<NetworkServiceResponse> call, Response<NetworkServiceResponse> response) {
                 Toast.makeText(getActivity().getApplicationContext(), "All done", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity().getApplicationContext(), ChatActivity.class);
+                System.out.println("id is: " + registeredUser.getId());
+                intent.putExtra(getActivity().getApplicationContext().getString(R.string.chatActivity), registeredUser.getId());
+                getActivity().startActivity(intent);
             }
 
             @Override

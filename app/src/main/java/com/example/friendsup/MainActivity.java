@@ -4,7 +4,9 @@ import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -16,17 +18,29 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.fragments.main.HomeFragment;
 import com.example.friendsup.fragments.main.MessangerFragment;
 import com.example.friendsup.fragments.main.NominationsFragment;
 import com.example.friendsup.fragments.main.NotificationsFragment;
 import com.example.friendsup.fragments.main.ProfileFragment;
+import com.example.friendsup.models.RegisteredUser;
+import com.example.friendsup.repository.NetworkAction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.GsonBuilder;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
 
 public class MainActivity extends BaseActivity {
     private BottomNavigationView bottomNavigationView;
     private Notification.Action.Builder NavOptions;
     private ImageButton toolbarMessengerButton;
+    private ImageView toolbarNavigationProfile;
 
     private void logout() {
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
@@ -104,6 +118,9 @@ public class MainActivity extends BaseActivity {
 
         System.out.println("JWT is found " + JWTToken);
 
+        setTopProfileImage();
+
+        this.toolbarNavigationProfile = (ImageView) findViewById(R.id.toolbar_navigation_profile);
 
         if (JWTToken != "") {
             setContentView(R.layout.activity_main_main);
@@ -189,4 +206,17 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+
+    private void setTopProfileImage() {
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(getString(R.string.userProfileImage), Context.MODE_PRIVATE);
+        String uriString = sharedPref.getString(getString(R.string.userProfileImage), "");
+        System.out.println("uri is " + uriString);
+        if (uriString != "" && Uri.parse(uriString) != null) {
+            try {
+                this.toolbarNavigationProfile.setImageURI(Uri.parse(uriString));
+            } catch (NullPointerException e) {
+                System.out.println(e);
+            }
+        }
+    }
 }

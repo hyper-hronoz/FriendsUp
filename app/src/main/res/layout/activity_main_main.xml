@@ -38,14 +38,14 @@
                 app:tint="@color/blue"
                 tools:layout_editor_absoluteX="50dp" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/toolbar_navigation_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="#00FFFFFF"
                 android:scaleType="fitEnd"
-                android:src="@drawable/profile" />
+                android:src="@drawable/default_photo" />
         </LinearLayout>
 
 
