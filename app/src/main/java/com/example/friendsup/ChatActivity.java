@@ -5,22 +5,27 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.friendsup.models.BeginChat;
 import com.example.friendsup.models.ImageMessage;
+import com.example.friendsup.models.MessengerPagination;
 import com.example.friendsup.models.TextMessage;
 import com.example.friendsup.ui.MessageAdapter;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,19 +38,21 @@ import java.net.URISyntaxException;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-import okhttp3.WebSocket;
 
 
 public class ChatActivity extends BaseActivity implements TextWatcher {
 
     private String chatterId;
-    private WebSocket webSocket;
     private String SERVER_PATH = "ws://192.168.0.15:80";
     private EditText messageEdit;
     private View sendBtn, pickImgBtn;
     private RecyclerView recyclerView;
     private int IMAGE_REQUEST_ID = 1;
     private MessageAdapter messageAdapter;
+    private int messagesWrote = 0;
+    private int pagination = 1;
+    private boolean isPreviousMessagesGet = false;
+    private String JWTToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +61,14 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
 
         this.chatterId = getIntent().getStringExtra(getString(R.string.chatActivity));
 
+        this.recyclerView = findViewById(R.id.recyclerView);
+
         initiateSocketConnection();
     }
 
     private Socket socket;
+
+
 
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
@@ -83,6 +94,8 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
 
                         jsonObject.put("isSent", false);
 
+                        updateMessagesCounter();
+
                         messageAdapter.addItem(jsonObject);
 
                         recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
@@ -95,33 +108,74 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
         }
     };
 
+    private Emitter.Listener onGetMessages = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println(args[0]);
+                    Toast.makeText(getApplicationContext(), "JOb", Toast.LENGTH_LONG).show();
+
+                    ImageMessage[] imageMessages = new Gson().fromJson(String.valueOf(args[0]), ImageMessage[].class);
+                    TextMessage[] textMessages = new Gson().fromJson(String.valueOf(args[0]), TextMessage[].class);
+
+                    for (int i = 0; i < textMessages.length; i++) {
+                        System.out.println("text message is " + textMessages[i].getMessage());
+                    }
+                    for (int i = 0; i < imageMessages.length; i++) {
+                        System.out.println("image message is " + imageMessages[i].getImage());
+                    }
+                }
+            });
+        }
+    };
+
+    private void updateMessagesCounter() {
+        this.messagesWrote++;
+    }
+
     private void initiateSocketConnection() {
+        System.out.println("initilizing socket connection");
         try {
             socket = IO.socket("http://192.168.0.15:80");
             socket.connect();
 
             SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
-            String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
 
-            BeginChat beginChat = new BeginChat(JWTToken, this.chatterId);
+            this.JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
 
-            String json = new Gson().toJson(beginChat);
+            addPreviousMessages();
 
-            socket.emit("begin-chat", json);
+            socket.on("get-previous-messages", onGetMessages);
 
             socket.on("message", onNewMessage);
 
             this.initializeView();
 
         } catch (URISyntaxException e) {
-            System.out.println();
+            System.out.println(e);
         }
 
+    }
+
+    private void addPreviousMessages() {
+        MessengerPagination messengerPagination = new MessengerPagination(this.pagination, this.messagesWrote, this.JWTToken, this.chatterId);
+        String json = new Gson().toJson(messengerPagination);
+        socket.emit("get-previous-messages", json);
+        pagination++;
     }
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.socket.disconnect();
+        this.socket.off("new message", onNewMessage);
     }
 
     @Override
@@ -156,36 +210,6 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
 
     }
 
-//    private class SocketListener extends WebSocketListener {
-//
-//        @Override
-//        public void onOpen(WebSocket webSocket, Response response) {
-//            super.onOpen(webSocket, response);
-//
-//            System.out.println("Response is: " + response);
-//
-//            runOnUiThread(() -> {
-//                Toast.makeText(ChatActivity.this,
-//                        "Socket Connection Successful!",
-//                        Toast.LENGTH_SHORT).show();
-//
-//                initializeView();
-//            });
-//
-//        }
-//
-//        @Override
-//        public void onMessage(WebSocket webSocket, String text) {
-//            super.onMessage(webSocket, text);
-//
-//            runOnUiThread(() -> {
-//
-//
-//
-//            });
-//
-//        }
-//    }
 
     private void initializeView() {
 
@@ -194,12 +218,23 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
         sendBtn = findViewById(R.id.sendBtn);
         pickImgBtn = findViewById(R.id.pickImgBtn);
 
-        this.recyclerView = findViewById(R.id.recyclerView);
 
         messageAdapter = new MessageAdapter(getLayoutInflater());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         this.recyclerView.setAdapter(messageAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(linearLayoutManager);
 
+
+        this.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                    addPreviousMessages();
+                }
+
+            }
+        });
 
         messageEdit.addTextChangedListener(this);
 
@@ -210,8 +245,12 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
 
                 jsonObject.put("userId", chatterId);
                 jsonObject.put("message", messageEdit.getText().toString());
+                jsonObject.put("jwt", this.JWTToken);
+                jsonObject.put("id", this.chatterId);
 
                 socket.emit("message", jsonObject.toString());
+
+                updateMessagesCounter();
 
                 jsonObject.put("isSent", true);
                 messageAdapter.addItem(jsonObject);
@@ -275,8 +314,12 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("userId", chatterId);
             jsonObject.put("image", base64String);
+            jsonObject.put("jwt", this.JWTToken);
+            jsonObject.put("id", this.chatterId);
 
             socket.emit("message", jsonObject.toString());
+
+            updateMessagesCounter();
 
             jsonObject.put("isSent", true);
 
