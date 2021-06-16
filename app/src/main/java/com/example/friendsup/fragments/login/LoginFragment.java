@@ -13,10 +13,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.MainActivity;
 import com.example.friendsup.R;
+import com.example.friendsup.fragments.other.FragmentLoader;
 import com.example.friendsup.models.NetworkServiceResponse;
 import com.example.friendsup.models.User;
 import com.example.friendsup.repository.NetworkAction;
@@ -80,7 +82,7 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private void login() {
+    private void login(View v) {
 
         this.email = this.loginEditText.getText().toString();
         this.password = this.passwordEditText.getText().toString();
@@ -94,6 +96,8 @@ public class LoginFragment extends Fragment {
         Call<NetworkServiceResponse> call = jsonPlaceHolderApi.loginUser(user);
 
         System.out.println(NetworkConfig.BASE_URL);
+
+
 
         call.enqueue(new Callback<NetworkServiceResponse>() {
             @Override
@@ -117,7 +121,8 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onFailure(Call<NetworkServiceResponse> call, Throwable t) {
-                Log.e("Login error ", t.getMessage());
+                Toast.makeText(getActivity().getApplicationContext(), "Connection error try again leter", Toast.LENGTH_LONG).show();
+                Log.e("Login error:", t.getMessage());
             }
         });
 
@@ -127,7 +132,7 @@ public class LoginFragment extends Fragment {
         this.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                login(v);
             }
         });
     }

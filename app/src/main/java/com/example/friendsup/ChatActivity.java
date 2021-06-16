@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,6 +22,8 @@ import com.example.friendsup.models.MessengerPagination;
 import com.example.friendsup.models.TextMessage;
 import com.example.friendsup.ui.MessageAdapter;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -108,6 +108,25 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
         }
     };
 
+    public static String
+    removeFirstandLast(String str) {
+
+        // Creating a StringBuilder object
+        StringBuilder sb = new StringBuilder(str);
+
+        // Removing the last character
+        // of a string
+        sb.deleteCharAt(str.length() - 1);
+
+        // Removing the first character
+        // of a string
+        sb.deleteCharAt(0);
+
+        // Converting StringBuilder into a string
+        // and return the modified string
+        return sb.toString();
+    }
+
     private Emitter.Listener onGetMessages = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -117,15 +136,48 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
                     System.out.println(args[0]);
                     Toast.makeText(getApplicationContext(), "JOb", Toast.LENGTH_LONG).show();
 
-                    ImageMessage[] imageMessages = new Gson().fromJson(String.valueOf(args[0]), ImageMessage[].class);
-                    TextMessage[] textMessages = new Gson().fromJson(String.valueOf(args[0]), TextMessage[].class);
+                    JsonElement jelement = new JsonParser().parse(String.valueOf(args[0]));
+                    JsonArray output = jelement.getAsJsonArray();
 
-                    for (int i = 0; i < textMessages.length; i++) {
-                        System.out.println("text message is " + textMessages[i].getMessage());
+                    for (int i = 0; i < output.size(); i++) {
+                        JsonElement outputElement = output.get(i);
+                        JsonObject iObjectOutput = outputElement.getAsJsonObject();
+
+                        try {
+                            JSONObject jsonObject = new JSONObject();
+                            if (iObjectOutput.get("message") != null) {
+                                TextMessage textMessage = new Gson().fromJson(outputElement.toString(), TextMessage.class);
+                                jsonObject.put("username", textMessage.getUsername());
+                                jsonObject.put("message", textMessage.getMessage());
+                            }
+                            else if (iObjectOutput.get("image") != null) {
+                                ImageMessage imageMessage = new Gson().fromJson(outputElement.toString(), ImageMessage.class);
+                                jsonObject.put("username", imageMessage.getUsername());
+                                jsonObject.put("image", imageMessage.getImage());
+                            }
+
+                            jsonObject.put("isSent", Boolean.parseBoolean(String.valueOf(iObjectOutput.get("isUsers"))));
+
+                            updateMessagesCounter();
+
+                            messageAdapter.addItem(jsonObject);
+
+                            recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                    for (int i = 0; i < imageMessages.length; i++) {
-                        System.out.println("image message is " + imageMessages[i].getImage());
-                    }
+//                    JsonObject iObjectOutput=outputElement.getAsJsonObject();
+//                    String value1 = iObjectOutput.get("key_11");
+//                    ImageMessage[] imageMessages = new Gson().fromJson(String.valueOf(args[0]), ImageMessage[].class);
+//                    TextMessage[] textMessages = new Gson().fromJson(String.valueOf(args[0]), TextMessage[].class);
+//
+//                    for (int i = 0; i < textMessages.length; i++) {
+//                        System.out.println("text message is " + textMessages[i].getMessage());
+//                    }
+//                    for (int i = 0; i < imageMessages.length; i++) {
+//                        System.out.println("image message is " + imageMessages[i].getImage());
+//                    }
                 }
             });
         }
@@ -230,9 +282,8 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                    addPreviousMessages();
+//                    addPreviousMessages();
                 }
-
             }
         });
 

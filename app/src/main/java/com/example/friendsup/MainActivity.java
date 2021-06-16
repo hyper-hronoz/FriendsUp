@@ -184,67 +184,6 @@ public class MainActivity extends BaseActivity {
             };
 
             this.bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
-//
-//            this.toolbarMessengerButton = (ImageButton) findViewById(R.id.toolbar_navigation_messages);
-//
-//            this.toolbarMessengerButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                      getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new MessangerFragment()).commit();
-//                }
-//            });
-//            NavController navController = Navigation.findNavController(this,  R.id.main_fragment_container);
-
-//            androidx.navigation.NavOptions.Builder navOptions = new NavOptions.Builder().setLaunchSingleTop(true).setEnterAnim(R.anim.android_animation_from_right_to_left);
-
-
-//            bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-//                    when(item.itemId) {
-//                R.id.fragmentFirst -> {
-//                    navController.navigate(R.id.fragmentFirst,null,options)
-//                }
-//                R.id.fragmentSecond -> {
-//                    navController.navigate(R.id.fragmentSecond,null,options)
-//                }
-//                R.id.fragmentThird -> {
-//                    navController.navigate(R.id.fragmentThird,null,options)
-//                }
-//            }
-//                true
-//            }
-
-
-//            NavController navController = Navigation.findNavController(this,  R.id.main_fragment_container);
-//            NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
-
-//            this.bottomNavigationView = findViewById(R.id.bottomNavigationView);
-//
-//            BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-//                @Override
-//                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                    Fragment fragment = null;
-//                    switch (item.getItemId()) {
-//                        case R.id.bottom_navigation_home:
-//                            fragment = new Home();
-//                            break;
-//
-//                        case R.id.bottom_navigation_search:
-//                            fragment = new Nominations();
-//                            break;
-//
-//                        case R.id.bottom_navigation_notifications:
-//                            fragment = new Notifications();
-//                            break;
-//                    }
-//
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container,fragment).commit();
-//
-//                    return true;
-//                }
-//            };
-//
-//            this.bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         } else {
             setContentView(R.layout.activity_main_authorization);
         }
