@@ -41,6 +41,7 @@ import java.io.IOException;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -162,9 +163,10 @@ public class ProfileFragment extends Fragment {
                     this.uploadProfileImage(file);
 
                     this.saveImageToGallery(bitmap);
-                    this.getProfileImageFromGallery();
+                    String uri = this.getProfileImageFromGallery();
+                    setProfileImageFromGallery(uri);
 
-                    System.out.println("file lenght is: " + file.length());
+                    System.out.println("file length is: " + file.length());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -175,9 +177,12 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void getProfileImageFromGallery() {
+    private String getProfileImageFromGallery() {
         SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.userProfileImage), Context.MODE_PRIVATE);
-        String uriString = sharedPref.getString(getString(R.string.userProfileImage), "");
+        return sharedPref.getString(getString(R.string.userProfileImage), "");
+    }
+
+    private void setProfileImageFromGallery(String uriString) {
         if (uriString != "") {
             this.profileImage.setImageURI(Uri.parse(uriString));
         }
@@ -187,8 +192,8 @@ public class ProfileFragment extends Fragment {
         String savedImageURL = MediaStore.Images.Media.insertImage(
                 getActivity().getContentResolver(),
                 bitmap,
-                "Bird",
-                "Image of bird"
+                "Profile",
+                "Image of profile"
         );
 
         Uri savedImageURI = Uri.parse(savedImageURL);
@@ -213,17 +218,17 @@ public class ProfileFragment extends Fragment {
         String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
 
         JSONPlaceHolderApi uploadApis = retrofit.create(JSONPlaceHolderApi.class);
-        Call call = uploadApis.uploadImage(parts, "Bearer " + JWTToken);
-        call.enqueue(new Callback() {
+        Call<ResponseBody> call = uploadApis.uploadImage(parts, "Bearer " + JWTToken);
+        call.enqueue(new Callback<ResponseBody>() {
             private Context context = getActivity().getApplicationContext();
 
             @Override
-            public void onResponse(Call call, Response response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 System.out.println("Ok");
             }
 
             @Override
-            public void onFailure(Call call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 System.out.println("error " + t.getMessage());
                 Toast.makeText(context, "Server connection error check your internet connection and try again later", Toast.LENGTH_SHORT).show();
             }
@@ -294,13 +299,18 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setCurrentUserData(RegisteredUser registeredUser) {
+        System.out.println("Setting current user data");
+
         this.nominationHeadingTextView.setText(registeredUser.getUsername());
         this.nominationAboutTextView.setText(registeredUser.getAbout());
         this.nominationHeadingEditText.setText(registeredUser.getUsername());
         this.nominationAboutEditText.setText(registeredUser.getAbout());
 
         try {
-            Glide.with(getActivity().getApplicationContext()).load(registeredUser.getUserPhoto()).into(this.profileImage);
+            Glide.with(getActivity()
+                    .getApplicationContext())
+                    .load(registeredUser.getUserPhoto())
+                    .into(this.profileImage);
         } catch (Exception ex) {
             Log.e("Exception", ex.toString());
         }
@@ -315,7 +325,6 @@ public class ProfileFragment extends Fragment {
                 .getIntent(getContext());
         startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }
-
 
 //    public void keyBoardStateChangeListener() {
 //        getActivity().getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(
@@ -355,7 +364,9 @@ public class ProfileFragment extends Fragment {
         this.nominationHeadingEditText = (EditText) v.findViewById(R.id.profile_heading_edit);
         this.nominationAboutEditText = (EditText) v.findViewById(R.id.profile_about_edit);
 
-        this.getProfileImageFromGallery();
+        String uri = this.getProfileImageFromGallery();
+        this.setProfileImageFromGallery(uri);
+
         this.getCurrentUserData();
 
         this.cameraButton.setOnClickListener(new View.OnClickListener() {
