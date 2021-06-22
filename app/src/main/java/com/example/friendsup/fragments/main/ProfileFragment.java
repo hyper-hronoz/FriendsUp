@@ -27,7 +27,7 @@ import com.bumptech.glide.Glide;
 import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.R;
 import com.example.friendsup.models.RegisteredUser;
-import com.example.friendsup.repository.NetworkAction;
+import com.example.friendsup.repository.Network;
 import com.example.friendsup.utils.KeyboardUtils;
 import com.google.gson.GsonBuilder;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -206,19 +206,12 @@ public class ProfileFragment extends Fragment {
 
     private void uploadProfileImage(File file) {
 
-        Retrofit retrofit = new NetworkAction().initializeRetrofit();
-
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part parts = MultipartBody.Part.createFormData("newimage", file.getName(), requestBody);
 
-        JSONPlaceHolderApi jsonPlaceHolderApi = new NetworkAction().initializeApi(retrofit);
+        JSONPlaceHolderApi uploadApis = Network.getJSONPalaceHolderAPI();
 
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
-
-        String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
-
-        JSONPlaceHolderApi uploadApis = retrofit.create(JSONPlaceHolderApi.class);
-        Call<ResponseBody> call = uploadApis.uploadImage(parts, "Bearer " + JWTToken);
+        Call<ResponseBody> call = uploadApis.uploadImage(parts, "Bearer " + Network.getJWT(getActivity().getApplicationContext()));
         call.enqueue(new Callback<ResponseBody>() {
             private Context context = getActivity().getApplicationContext();
 
@@ -242,15 +235,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void sendNewUserData(RegisteredUser registeredUser) {
-        Retrofit retrofit = new NetworkAction().initializeRetrofit();
 
-        JSONPlaceHolderApi jsonPlaceHolderApi = new NetworkAction().initializeApi(retrofit);
+        String JWTToken = Network.getJWT(getActivity().getApplicationContext());
 
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
-
-        String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
-
-        Call<RegisteredUser> call = jsonPlaceHolderApi.updateCurrentUserData("Bearer " + JWTToken, registeredUser);
+        Call<RegisteredUser> call = Network.getJSONPalaceHolderAPI().updateCurrentUserData("Bearer " + JWTToken, registeredUser);
 
         call.enqueue(new Callback<RegisteredUser>() {
             @Override
@@ -262,25 +250,13 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFailure(Call<RegisteredUser> call, Throwable t) {
                 System.out.println("error " + t.getMessage());
-                makeRequestUserData(jsonPlaceHolderApi, JWTToken);
+                Toast.makeText(getActivity().getApplicationContext(), "Sorry connection error try again later", Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void getCurrentUserData() {
-        Retrofit retrofit = new NetworkAction().initializeRetrofit();
-
-        JSONPlaceHolderApi jsonPlaceHolderApi = new NetworkAction().initializeApi(retrofit);
-
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
-
-        String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
-
-        makeRequestUserData(jsonPlaceHolderApi, JWTToken);
-    }
-
-    private void makeRequestUserData(JSONPlaceHolderApi jsonPlaceHolderApi, String JWTToken) {
-        Call<RegisteredUser> call = jsonPlaceHolderApi.getCurrentUserData("Bearer " + JWTToken);
+        Call<RegisteredUser> call = Network.getJSONPalaceHolderAPI().getCurrentUserData("Bearer " + Network.getJWT(getActivity().getApplicationContext()));
 
         call.enqueue(new Callback<RegisteredUser>() {
             @Override
@@ -293,7 +269,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFailure(Call<RegisteredUser> call, Throwable t) {
                 System.out.println("error " + t.getMessage());
-                makeRequestUserData(jsonPlaceHolderApi, JWTToken);
+                getCurrentUserData();
             }
         });
     }
@@ -325,25 +301,6 @@ public class ProfileFragment extends Fragment {
                 .getIntent(getContext());
         startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }
-
-//    public void keyBoardStateChangeListener() {
-//        getActivity().getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(
-//                new ViewTreeObserver.OnGlobalLayoutListener() {
-//                    @Override
-//                    public void onGlobalLayout() {
-//                        Rect r = new Rect();
-//                        getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
-//                        int screenHeight = getActivity().getWindow().getDecorView().getRootView().getHeight();
-//                        int keypadHeight = screenHeight - r.bottom;
-//                        if (keypadHeight > screenHeight * 0.15) {
-//                            Toast.makeText(getActivity().getApplicationContext(), "Open", Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            Toast.makeText(getActivity().getApplicationContext(), "Closed", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-//    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -402,10 +359,6 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-
-//        keyBoardStateChangeListener();
-
-//        this.editButton
 
         return v;
     }

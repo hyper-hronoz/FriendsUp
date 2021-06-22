@@ -17,14 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.R;
 import com.example.friendsup.models.Chat;
-import com.example.friendsup.models.Contact;
-import com.example.friendsup.repository.NetworkAction;
+import com.example.friendsup.repository.Network;
 import com.example.friendsup.ui.ContactsAdapter;
 import com.google.gson.GsonBuilder;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -115,15 +111,8 @@ public class MessangerFragment extends Fragment {
 
     private void getUserChats() {
 
-        Retrofit retrofit = new NetworkAction().initializeRetrofit();
 
-        JSONPlaceHolderApi jsonPlaceHolderApi = new NetworkAction().initializeApi(retrofit);
-
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
-
-        String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
-
-        Call<List<Chat>> call = jsonPlaceHolderApi.getUsersChatRooms("Bearer " + JWTToken);
+        Call<List<Chat>> call = Network.getJSONPalaceHolderAPI().getUsersChatRooms("Bearer " + Network.getJWT(getActivity().getApplicationContext()));
 
         call.enqueue(new Callback<List<Chat>>() {
             private Context context = getActivity().getApplicationContext();

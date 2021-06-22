@@ -1,7 +1,6 @@
 package com.example.friendsup.fragments.main;
 
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,12 +31,10 @@ import com.example.friendsup.MainActivity;
 import com.example.friendsup.R;
 import com.example.friendsup.models.NetworkServiceResponse;
 import com.example.friendsup.models.RegisteredUser;
-import com.example.friendsup.repository.NetworkAction;
+import com.example.friendsup.repository.Network;
 import com.example.friendsup.utils.OnSwipeTouchListener;
 import com.google.gson.GsonBuilder;
 
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -108,17 +105,11 @@ public class NominationsFragment extends Fragment {
     }
 
     private void getRandomUser() {
-        SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
 
-        String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
 
-        Retrofit retrofit = new NetworkAction().initializeRetrofit();
+        JSONPlaceHolderApi jsonPlaceHolderApi = Network.getJSONPalaceHolderAPI();
 
-        JSONPlaceHolderApi jsonPlaceHolderApi = new NetworkAction().initializeApi(retrofit);
-
-        Log.d("JWT is" , JWTToken);
-
-        Call<RegisteredUser> call = jsonPlaceHolderApi.findUser("Bearer " + JWTToken);
+        Call<RegisteredUser> call = jsonPlaceHolderApi.findUser("Bearer " + Network.getJWT(getActivity().getApplicationContext()));
 
         call.enqueue(new Callback<RegisteredUser>() {
             private Context context = getActivity().getApplicationContext();
@@ -221,17 +212,10 @@ public class NominationsFragment extends Fragment {
     }
 
     private void startChat(RegisteredUser registeredUser) {
-        Retrofit retrofit = new NetworkAction().initializeRetrofit();
 
-        SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
+        JSONPlaceHolderApi jsonPlaceHolderApi = Network.getJSONPalaceHolderAPI();
 
-        String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
-
-        System.out.println(JWTToken);
-
-        JSONPlaceHolderApi jsonPlaceHolderApi = new NetworkAction().initializeApi(retrofit);
-
-        Call<NetworkServiceResponse> call = jsonPlaceHolderApi.createChatRoom("Bearer " + JWTToken, registeredUser);
+        Call<NetworkServiceResponse> call = jsonPlaceHolderApi.createChatRoom("Bearer " + Network.getJWT(getActivity().getApplicationContext()), registeredUser);
 
         call.enqueue(new Callback<NetworkServiceResponse>() {
             private Context context = getActivity().getApplicationContext();

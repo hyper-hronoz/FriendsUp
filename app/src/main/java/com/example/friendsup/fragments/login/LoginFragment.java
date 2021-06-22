@@ -13,15 +13,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.MainActivity;
 import com.example.friendsup.R;
-import com.example.friendsup.fragments.other.FragmentLoader;
 import com.example.friendsup.models.NetworkServiceResponse;
 import com.example.friendsup.models.User;
-import com.example.friendsup.repository.NetworkAction;
+import com.example.friendsup.repository.Network;
 import com.example.friendsup.repository.NetworkConfig;
 import com.google.gson.GsonBuilder;
 
@@ -45,11 +43,13 @@ public class LoginFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private EditText loginEditText;
-    private EditText passwordEditText;
+
+    private EditText editTextLogin;
+    private EditText editTextPassword;
+    private Button buttonLogin;
+
     private String email;
     private String password;
-    private Button loginButton;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -84,20 +84,14 @@ public class LoginFragment extends Fragment {
 
     private void login(View v) {
 
-        this.email = this.loginEditText.getText().toString();
-        this.password = this.passwordEditText.getText().toString();
+        this.email = this.editTextLogin.getText().toString();
+        this.password = this.editTextPassword.getText().toString();
 
         User user = new User(this.email, this.password);
 
-        Retrofit retrofit = new NetworkAction().initializeRetrofit();
-
-        JSONPlaceHolderApi jsonPlaceHolderApi = new NetworkAction().initializeApi(retrofit);
-
-        Call<NetworkServiceResponse> call = jsonPlaceHolderApi.loginUser(user);
+        Call<NetworkServiceResponse> call = Network.getJSONPalaceHolderAPI().loginUser(user);
 
         System.out.println(NetworkConfig.BASE_URL);
-
-
 
         call.enqueue(new Callback<NetworkServiceResponse>() {
             @Override
@@ -107,12 +101,7 @@ public class LoginFragment extends Fragment {
                 if (response.code() == 400) {
                     Toast.makeText(getActivity().getApplicationContext(), "Hei incorrect login or password", Toast.LENGTH_LONG).show();
                 } else {
-                    String jwt = new GsonBuilder().setPrettyPrinting().create().toJson(response.body().getResponse()).replaceAll("^.|.$", "");
-                    SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    Log.d("JWT toke from login", jwt);
-                    editor.putString(getString(R.string.JWTToken), jwt);
-                    editor.commit();
+                    Network.setJWT(getActivity().getApplicationContext(), new GsonBuilder().setPrettyPrinting().create().toJson(response.body().getResponse()).replaceAll("^.|.$", ""));
                     Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
                     getActivity().finish();
                     startActivity(intent);
@@ -129,7 +118,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void listeners() {
-        this.loginButton.setOnClickListener(new View.OnClickListener() {
+        this.buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login(v);
@@ -143,9 +132,9 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
-        this.loginEditText = v.findViewById(R.id.email_edit_text);
-        this.passwordEditText = v.findViewById(R.id.password_edit_text);
-        this.loginButton = v.findViewById(R.id.loginButton);
+        this.editTextLogin = v.findViewById(R.id.email_edit_text);
+        this.editTextPassword = v.findViewById(R.id.password_edit_text);
+        this.buttonLogin = v.findViewById(R.id.loginButton);
 
         listeners();
 

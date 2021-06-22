@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -18,23 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.friendsup.API.JSONPlaceHolderApi;
-import com.example.friendsup.fragments.main.HomeFragment;
 import com.example.friendsup.fragments.main.MessangerFragment;
 import com.example.friendsup.fragments.main.NominationsFragment;
 import com.example.friendsup.fragments.main.NotificationsFragment;
 import com.example.friendsup.fragments.main.ProfileFragment;
-import com.example.friendsup.models.RegisteredUser;
-import com.example.friendsup.repository.NetworkAction;
+import com.example.friendsup.repository.Network;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.GsonBuilder;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
 
 public class MainActivity extends BaseActivity {
     private BottomNavigationView bottomNavigationView;
@@ -51,6 +39,85 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         finish();
         startActivity(intent);
+    }
+
+    private void initilizeNavigation() {
+        ImageView imageView = findViewById(R.id.toolbar_navigation_profile);
+
+        imageView.setOnClickListener(viewClickListener);
+
+        this.bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        View view = bottomNavigationView.findViewById(R.id.bottom_navigation_search);
+
+        view.performClick();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new NominationsFragment()).commit();
+
+        BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod = new BottomNavigationView.OnNavigationItemSelectedListener() {
+            private String currentFragment = "MESSAGES";
+
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment = null;
+
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+                switch (item.getItemId()) {
+                    case R.id.bottom_navigation_messanger:
+                        System.out.println(currentFragment);
+                        fragmentTransaction.setCustomAnimations(
+                                R.anim.fragment_enter_animation_from_left_to_right,
+                                R.anim.fragment_exit_animation_from_left_to_right,
+                                R.anim.fragment_exit_animation_from_left_to_right,
+                                R.anim.fragment_exit_animation_from_left_to_right
+                        );
+                        this.currentFragment = "MESSAGES";
+                        fragment = new MessangerFragment();
+                        break;
+
+                    case R.id.bottom_navigation_search:
+                        System.out.println(currentFragment);
+                        if (currentFragment == "NOTIFICATIONS") {
+                            fragmentTransaction.setCustomAnimations(
+                                    R.anim.fragment_enter_animation_from_left_to_right,
+                                    R.anim.fragment_exit_animation_from_right_to_left,
+                                    R.anim.fragment_exit_animation_from_right_to_left,
+                                    R.anim.fragment_exit_animation_from_right_to_left
+                            );
+                        }
+                        if (currentFragment == "MESSAGES") {
+                            fragmentTransaction.setCustomAnimations(
+                                    R.anim.fragment_enter_animation_from_right_to_left,
+                                    R.anim.fragment_exit_animation_from_left_to_right,
+                                    R.anim.fragment_exit_animation_from_left_to_right,
+                                    R.anim.fragment_exit_animation_from_left_to_right
+                            );
+                        }
+                        System.out.println("id: " + bottomNavigationView.getSelectedItemId());
+                        this.currentFragment = "NOMINATIONS";
+                        fragment = new NominationsFragment();
+                        break;
+
+                    case R.id.bottom_navigation_notifications:
+                        System.out.println(currentFragment);
+                        fragmentTransaction.setCustomAnimations(
+                                R.anim.fragment_enter_animation_from_right_to_left,
+                                R.anim.fragment_exit_animation_from_left_to_right,
+                                R.anim.fragment_exit_animation_from_left_to_right,
+                                R.anim.fragment_exit_animation_from_left_to_right
+                        );
+                        this.currentFragment = "NOTIFICATIONS";
+                        fragment = new NotificationsFragment();
+                        break;
+                }
+
+                fragmentTransaction.replace(R.id.main_fragment_container, fragment).commit();
+                return true;
+            }
+        };
+
+        this.bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
     }
 
     private void showPopupMenu(View v) {
@@ -109,114 +176,19 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
-        String JWTToken = sharedPref.getString(getString(R.string.JWTToken), "");
-
-        System.out.println("JWT is found " + JWTToken);
-
-        setTopProfileImage();
-
         this.toolbarNavigationProfile = (ImageView) findViewById(R.id.toolbar_navigation_profile);
 
-        if (JWTToken != "") {
+        if (Network.getJWT(getApplicationContext()) != "") {
             setContentView(R.layout.activity_main_main);
+            this.initilizeNavigation();
 
-            ImageView imageView = findViewById(R.id.toolbar_navigation_profile);
-
-            imageView.setOnClickListener(viewClickListener);
-
-            this.bottomNavigationView = findViewById(R.id.bottomNavigationView);
-
-            View view = bottomNavigationView.findViewById(R.id.bottom_navigation_search);
-
-            view.performClick();
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new NominationsFragment()).commit();
-
-            BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod = new BottomNavigationView.OnNavigationItemSelectedListener() {
-                private String currentFragment = "MESSAGES";
-
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment fragment = null;
-
-                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
-                    switch (item.getItemId()) {
-                        case R.id.bottom_navigation_messanger:
-                            System.out.println(currentFragment);
-                            fragmentTransaction.setCustomAnimations(
-                                    R.anim.fragment_enter_animation_from_left_to_right,  // enter
-                                    R.anim.fragment_exit_animation_from_left_to_right,
-                                    R.anim.fragment_exit_animation_from_left_to_right,
-                                    R.anim.fragment_exit_animation_from_left_to_right
-                            );
-                            this.currentFragment = "MESSAGES";
-                            fragment = new MessangerFragment();
-                            break;
-
-                        case R.id.bottom_navigation_search:
-                            System.out.println(currentFragment);
-                            if (currentFragment == "NOTIFICATIONS") {
-                                fragmentTransaction.setCustomAnimations(
-                                        R.anim.fragment_enter_animation_from_left_to_right,  // enter
-                                        R.anim.fragment_exit_animation_from_right_to_left,
-                                        R.anim.fragment_exit_animation_from_right_to_left,
-                                        R.anim.fragment_exit_animation_from_right_to_left
-                                );
-                            }
-                            if (currentFragment == "MESSAGES") {
-                                fragmentTransaction.setCustomAnimations(
-                                        R.anim.fragment_enter_animation_from_right_to_left,  // enter
-                                        R.anim.fragment_exit_animation_from_left_to_right,
-                                        R.anim.fragment_exit_animation_from_left_to_right,
-                                        R.anim.fragment_exit_animation_from_left_to_right
-                                );
-                            }
-                            System.out.println("id: " + bottomNavigationView.getSelectedItemId());
-                            this.currentFragment = "NOMINATIONS";
-                            fragment = new NominationsFragment();
-                            break;
-
-                        case R.id.bottom_navigation_notifications:
-                            System.out.println(currentFragment);
-                            fragmentTransaction.setCustomAnimations(
-                                    R.anim.fragment_enter_animation_from_right_to_left,  // enter
-                                    R.anim.fragment_exit_animation_from_left_to_right,
-                                    R.anim.fragment_exit_animation_from_left_to_right,
-                                    R.anim.fragment_exit_animation_from_left_to_right
-                            );
-                            this.currentFragment = "NOTIFICATIONS";
-                            fragment = new NotificationsFragment();
-                            break;
-                    }
-
-                    fragmentTransaction.replace(R.id.main_fragment_container, fragment).commit();
-                    return true;
-                }
-            };
-
-            this.bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
         } else {
             setContentView(R.layout.activity_main_authorization);
-        }
-    }
-
-
-    private void setTopProfileImage() {
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(getString(R.string.userProfileImage), Context.MODE_PRIVATE);
-        String uriString = sharedPref.getString(getString(R.string.userProfileImage), "");
-        System.out.println("uri is " + uriString);
-        if (uriString != "" && Uri.parse(uriString) != null) {
-            try {
-                this.toolbarNavigationProfile.setImageURI(Uri.parse(uriString));
-            } catch (NullPointerException e) {
-                System.out.println(e);
-            }
         }
     }
 }

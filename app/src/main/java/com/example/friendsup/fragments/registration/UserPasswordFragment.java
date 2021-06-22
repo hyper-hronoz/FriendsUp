@@ -19,7 +19,7 @@ import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.R;
 import com.example.friendsup.models.NetworkServiceResponse;
 import com.example.friendsup.models.User;
-import com.example.friendsup.repository.NetworkAction;
+import com.example.friendsup.repository.Network;
 import com.example.friendsup.utils.FormValidator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -111,11 +111,7 @@ public class UserPasswordFragment extends Fragment {
             editor.commit();
 //            Navigation.findNavController(v).navigate(R.id.userPassword);
 
-            Retrofit retrofit = new NetworkAction().initializeRetrofit();
-
-            JSONPlaceHolderApi jsonPlaceHolderApi = new NetworkAction().initializeApi(retrofit);
-
-            Call<NetworkServiceResponse> call = jsonPlaceHolderApi.registerUser(user);
+            Call<NetworkServiceResponse> call = Network.getJSONPalaceHolderAPI().registerUser(user);
 
             call.enqueue(new Callback<NetworkServiceResponse>() {
                 @Override
