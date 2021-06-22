@@ -297,7 +297,7 @@ public class ProfileFragment extends Fragment {
         Intent intent = CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setMultiTouchEnabled(true)
-                .setAspectRatio(16, 12)
+                .setAspectRatio(16, 13)
                 .getIntent(getContext());
         startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }
@@ -308,11 +308,11 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_nominations, container, false);
 
-        this.editButton = (ImageButton) v.findViewById(R.id.edit_button);
+        this.editButton = (ImageButton) v.findViewById(R.id.fragment_nominations__edit_button);
         this.defaultScrollView = (ScrollView) v.findViewById(R.id.userScrollView);
         this.editScrollView = (ScrollView) v.findViewById(R.id.userScrollViewEdit);
-        this.messageButton = (ImageButton) v.findViewById(R.id.message_button);
-        this.cameraButton = (ImageButton) v.findViewById(R.id.camera_button);
+        this.messageButton = (ImageButton) v.findViewById(R.id.fragment_nominations__message_button);
+        this.cameraButton = (ImageButton) v.findViewById(R.id.fragment_nominations__camera_button);
         this.messageButton.setVisibility(View.GONE);
         this.editButton.setVisibility(View.VISIBLE);
         this.profileImage = (ImageView) v.findViewById(R.id.userAvatar);

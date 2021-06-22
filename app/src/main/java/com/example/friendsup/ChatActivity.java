@@ -108,25 +108,6 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
         }
     };
 
-    public static String
-    removeFirstandLast(String str) {
-
-        // Creating a StringBuilder object
-        StringBuilder sb = new StringBuilder(str);
-
-        // Removing the last character
-        // of a string
-        sb.deleteCharAt(str.length() - 1);
-
-        // Removing the first character
-        // of a string
-        sb.deleteCharAt(0);
-
-        // Converting StringBuilder into a string
-        // and return the modified string
-        return sb.toString();
-    }
-
     private Emitter.Listener onGetMessages = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -167,17 +148,6 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
                             e.printStackTrace();
                         }
                     }
-//                    JsonObject iObjectOutput=outputElement.getAsJsonObject();
-//                    String value1 = iObjectOutput.get("key_11");
-//                    ImageMessage[] imageMessages = new Gson().fromJson(String.valueOf(args[0]), ImageMessage[].class);
-//                    TextMessage[] textMessages = new Gson().fromJson(String.valueOf(args[0]), TextMessage[].class);
-//
-//                    for (int i = 0; i < textMessages.length; i++) {
-//                        System.out.println("text message is " + textMessages[i].getMessage());
-//                    }
-//                    for (int i = 0; i < imageMessages.length; i++) {
-//                        System.out.println("image message is " + imageMessages[i].getImage());
-//                    }
                 }
             });
         }

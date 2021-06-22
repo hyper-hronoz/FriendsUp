@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initilizeNavigation() {
-        ImageView imageView = findViewById(R.id.toolbar_navigation_profile);
+        ImageView imageView = findViewById(R.id.main_activity__toolbar_profile);
 
         imageView.setOnClickListener(viewClickListener);
 
@@ -120,6 +120,18 @@ public class MainActivity extends BaseActivity {
         this.bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
     }
 
+    private String getProfileImageFromGallery() {
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(getString(R.string.userProfileImage), Context.MODE_PRIVATE);
+        return sharedPref.getString(getString(R.string.userProfileImage), "");
+    }
+
+    private void setProfileImageFromGallery(String uriString) {
+        if (uriString != "") {
+            ImageView profile = findViewById(R.id.main_activity__toolbar_profile);
+            profile.setImageURI(Uri.parse(uriString));
+        }
+    }
+
     private void showPopupMenu(View v) {
         PopupMenu popupMenu = new PopupMenu(this, v);
         popupMenu.inflate(R.menu.main_top_menu);
@@ -181,10 +193,10 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.toolbarNavigationProfile = (ImageView) findViewById(R.id.toolbar_navigation_profile);
 
         if (Network.getJWT(getApplicationContext()) != "") {
             setContentView(R.layout.activity_main_main);
+            setProfileImageFromGallery(getProfileImageFromGallery());
             this.initilizeNavigation();
 
         } else {

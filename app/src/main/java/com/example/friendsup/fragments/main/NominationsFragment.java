@@ -172,8 +172,8 @@ public class NominationsFragment extends Fragment {
         this.nominationAboutTextView = (TextView) v.findViewById(R.id.profile_about);
 
         this.nominationPhoto.setBackgroundResource(R.drawable.default_photo);
-        this.profileButtonLayout = (LinearLayout) v.findViewById(R.id.profile_button_layout);
-        this.chatButton = (ImageButton) v.findViewById(R.id.message_button);
+//        this.profileButtonLayout = (LinearLayout) v.findViewById(R.id.profile_button_layout);
+        this.chatButton = (ImageButton) v.findViewById(R.id.fragment_nominations__message_button);
 
 
 //        compressScrollViewHeight();

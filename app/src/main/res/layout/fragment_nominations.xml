@@ -8,96 +8,98 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.main.NominationsFragment">
 
-
     <ImageView
         android:id="@+id/userAvatar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="16:12"
+        app:layout_constraintDimensionRatio="16:13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <LinearLayout
-        android:id="@+id/profile_button_layout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="15dp"
-        android:gravity="right"
+        android:orientation="horizontal"
+        android:elevation="2000dp"
         app:layout_constraintBottom_toBottomOf="@+id/userAvatar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+      >
 
 
         <ImageButton
-            android:id="@+id/edit_button"
-            android:layout_width="63dp"
-            android:layout_height="63dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/like_button"
-            android:visibility="gone"
+            android:id="@+id/fragment_nominations__edit_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/profile_button"
             android:padding="18dp"
+            android:layout_marginRight="15dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_edit"
+            android:visibility="gone"
             app:tint="@color/white" />
 
         <ImageButton
-            android:layout_width="63dp"
-            android:layout_height="63dp"
+            android:id="@+id/fragment_nominations__info_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginRight="15dp"
-            android:background="@drawable/like_button"
+            android:background="@drawable/profile_button"
             android:padding="18dp"
             android:src="@drawable/ic_info"
             app:tint="@color/white" />
 
         <ImageButton
-            android:layout_width="63dp"
-            android:layout_height="63dp"
+            android:id="@+id/fragment_nominations__like_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginRight="15dp"
-            android:background="@drawable/like_button"
+            android:background="@drawable/profile_button"
             android:padding="18dp"
             android:src="@drawable/ic_like"
             app:tint="@color/white" />
 
         <ImageButton
-            android:id="@+id/message_button"
-            android:layout_width="63dp"
-            android:layout_height="63dp"
+            android:id="@+id/fragment_nominations__message_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginRight="15dp"
-            android:background="@drawable/like_button"
+            android:background="@drawable/profile_button"
             android:padding="18dp"
-            android:scaleType="fitXY"
+            android:scaleType="center"
             android:src="@drawable/ic_messages"
             app:tint="@color/white" />
 
         <ImageButton
-            android:id="@+id/camera_button"
-            android:layout_width="63dp"
-            android:layout_height="63dp"
+            android:id="@+id/fragment_nominations__camera_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginRight="15dp"
-            android:background="@drawable/like_button"
+            android:background="@drawable/profile_button"
             android:padding="18dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_camera"
             android:visibility="gone"
+            android:src="@drawable/ic_camera"
             app:tint="@color/white" />
+
 
     </LinearLayout>
 
+
     <ScrollView
-        android:elevation="200dp"
         android:id="@+id/userScrollView"
+        android:elevation="200dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/white"
         android:orientation="vertical"
         android:paddingHorizontal="15dp"
         android:paddingTop="27dp"
+        android:layout_marginTop="-25dp"
+        android:background="@drawable/nominations_bottom_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userAvatar"
         app:layout_constraintVertical_bias="1.0">
@@ -112,18 +114,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Loading..."
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/profile_about"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="5sp"
                 android:text="Loading..." />
 
         </LinearLayout>
     </ScrollView>
+
+
 
     <ScrollView
         android:elevation="200dp"
@@ -153,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_profile"
                 android:text="Loading..."
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:minEms="5"
                 android:hint="What is your name?"
                 android:textStyle="bold" />
@@ -164,13 +168,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_profile"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:minEms="5"
                 android:hint="Write a little about yourself"
                 android:text="Loading..." />
 
         </LinearLayout>
     </ScrollView>
+
 
 
 
