@@ -16,7 +16,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.friendsup.ViewModel.ChatsViewModel;
 import com.example.friendsup.fragments.main.MessangerFragment;
 import com.example.friendsup.fragments.main.NominationsFragment;
 import com.example.friendsup.fragments.main.NotificationsFragment;
@@ -198,7 +200,6 @@ public class MainActivity extends BaseActivity {
             setContentView(R.layout.activity_main_main);
             setProfileImageFromGallery(getProfileImageFromGallery());
             this.initilizeNavigation();
-
         } else {
             setContentView(R.layout.activity_main_authorization);
         }

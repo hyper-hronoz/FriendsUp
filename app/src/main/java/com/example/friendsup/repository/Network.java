@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.R;
-import com.google.gson.GsonBuilder;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -37,11 +36,18 @@ public class Network {
     public static String getJWT(Context context) {
         if (JWT == null) {
             SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
-            return sharedPref.getString(context.getString(R.string.JWTToken), "");
+            JWT = sharedPref.getString(context.getString(R.string.JWTToken), "");
+            return JWT;
         }
         return JWT;
     }
 
+    public static String getJWT() {
+        if (JWT == null) {
+            return "";
+        }
+        return JWT;
+    }
 
     public static void setJWT(Context context, String jwt) {
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);

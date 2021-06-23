@@ -30,8 +30,8 @@ android {
 }
 
 dependencies {
-    // mvvm
-    implementation "android.arch.lifecycle:extensions:1.0.0"
+    // viewmodel and livedata /app/build.gradle dependencies
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
 
     // network
     implementation 'com.squareup.retrofit2:retrofit:2.0.1'

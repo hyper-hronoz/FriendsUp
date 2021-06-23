@@ -10,12 +10,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.R;
+import com.example.friendsup.ViewModel.ChatsViewModel;
 import com.example.friendsup.models.Chat;
 import com.example.friendsup.repository.Network;
 import com.example.friendsup.ui.ContactsAdapter;
@@ -82,16 +86,27 @@ public class MessangerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_messanger, container, false);
-//
+
         this.rvContacts = (RecyclerView) v.findViewById(R.id.rvContacts);
 
         this.haveNoMessages = (TextView) v.findViewById(R.id.noMessages);
 
-        getUserChats();
-
         return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ChatsViewModel model = new ViewModelProvider(getActivity()).get(ChatsViewModel.class);
+
+        model.getChats().observe(getActivity(), chats -> {
+            if (chats.size() == 0) {
+                return;
+            }
+            setCurrentUserChatRooms(chats);
+        });
     }
 
     private void setCurrentUserChatRooms(List<Chat> chats) {
@@ -107,33 +122,5 @@ public class MessangerFragment extends Fragment {
         this.rvContacts.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         System.out.println(chats);
-    }
-
-    private void getUserChats() {
-
-
-        Call<List<Chat>> call = Network.getJSONPalaceHolderAPI().getUsersChatRooms("Bearer " + Network.getJWT(getActivity().getApplicationContext()));
-
-        call.enqueue(new Callback<List<Chat>>() {
-            private Context context = getActivity().getApplicationContext();
-
-            @Override
-            public void onResponse(Call<List<Chat>> call, Response<List<Chat>> response) {
-                Log.d("Search status code is", String.valueOf(response.code()));
-                Log.d("Search response body is", new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
-                if (response.code() == 200) {
-                    setCurrentUserChatRooms(response.body());
-                } else if (response.code() == 500) {
-                    Toast.makeText(context, "User cannot be found internal server error", Toast.LENGTH_SHORT).show();
-                } else {
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Chat>> call, Throwable t) {
-                Log.e("Search nominat error", t.getMessage());
-                Toast.makeText(context, "Connection error", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }
