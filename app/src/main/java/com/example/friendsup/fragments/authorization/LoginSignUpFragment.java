@@ -1,4 +1,4 @@
-package com.example.friendsup.fragments;
+package com.example.friendsup.fragments.authorization;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

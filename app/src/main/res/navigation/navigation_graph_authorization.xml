@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginSignUpFragment"
-        android:name="com.example.friendsup.fragments.LoginSignUpFragment"
+        android:name="com.example.friendsup.fragments.authorization.LoginSignUpFragment"
         android:label="fragment_login_sign_up"
         tools:layout="@layout/fragment_login_sign_up" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/userNameSername"
-        android:name="com.example.friendsup.fragments.registration.UserNameSernameFragment"
+        android:name="com.example.friendsup.fragments.authorization.registration.UserNameSernameFragment"
         android:label="fragment_user_name_sername"
         tools:layout="@layout/fragment_user_name_sername" >
         <action
@@ -28,10 +28,13 @@
         <action
             android:id="@+id/action_userNameSername_to_loginSignUpFragment"
             app:destination="@id/loginSignUpFragment" />
+        <action
+            android:id="@+id/action_userNameSername_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/userEmail"
-        android:name="com.example.friendsup.fragments.registration.UserEmailFragment"
+        android:name="com.example.friendsup.fragments.authorization.registration.UserEmailFragment"
         android:label="fragment_user_email"
         tools:layout="@layout/fragment_user_email" >
         <action
@@ -40,23 +43,40 @@
         <action
             android:id="@+id/action_userEmail_to_userNameSername"
             app:destination="@id/userNameSername" />
+        <action
+            android:id="@+id/action_userEmail_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/userPassword"
-        android:name="com.example.friendsup.fragments.registration.UserPasswordFragment"
+        android:name="com.example.friendsup.fragments.authorization.registration.UserPasswordFragment"
         android:label="fragment_user_password"
         tools:layout="@layout/fragment_user_password" >
         <action
             android:id="@+id/action_userPassword_to_userEmail"
             app:destination="@id/userEmail" />
+        <action
+            android:id="@+id/action_userPassword_to_emailConfirmationFragment"
+            app:destination="@id/emailConfirmationFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.friendsup.fragments.login.LoginFragment"
+        android:name="com.example.friendsup.fragments.authorization.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_loginSignUpFragment"
             app:destination="@id/loginSignUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_emailConfirmationFragment"
+            app:destination="@id/emailConfirmationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_userNameSername"
+            app:destination="@id/userNameSername" />
     </fragment>
+    <fragment
+        android:id="@+id/emailConfirmationFragment"
+        android:name="com.example.friendsup.fragments.authorization.EmailConfirmationFragment"
+        android:label="fragment_email_confirmation"
+        tools:layout="@layout/fragment_email_confirmation" />
 </navigation>

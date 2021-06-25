@@ -1,42 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="63dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:gravity="center_vertical" tools:ignore="MissingDefaultResource"
-    >
+    android:gravity="center_vertical"
+    tools:ignore="MissingDefaultResource">
+
 
     <RelativeLayout
         android:layout_width="61dp"
         android:layout_height="61dp">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/view2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="left"
+            app:cardCornerRadius="60dp">
 
-        <!--            <androidx.cardview.widget.CardView-->
-        <!--                android:id="@+id/view2"-->
-        <!--                android:layout_width="61dp"-->
-        <!--                android:layout_height="61dp"-->
-        <!--                android:layout_centerHorizontal="true"-->
-        <!--                android:layout_gravity="left"-->
-        <!--                android:elevation="12dp"-->
-        <!--                app:cardCornerRadius="40dp">-->
+            <ImageView
+                android:id="@+id/contactProfile"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/images" />
 
-
-        <ImageView
-            android:id="@+id/contactProfile"
-            android:layout_width="61dp"
-            android:layout_height="61dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/images" />
-
-        <!--            </androidx.cardview.widget.CardView>-->
+        </androidx.cardview.widget.CardView>
 
         <View
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_alignParentTop="true"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:elevation="2200000dp"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentBottom="true"
             android:background="@drawable/circle" />
 
     </RelativeLayout>

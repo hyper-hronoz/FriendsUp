@@ -1,4 +1,4 @@
-package com.example.friendsup.fragments.registration;
+package com.example.friendsup.fragments.authorization.registration;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -34,6 +35,7 @@ public class UserEmailFragment extends Fragment {
     private String mParam2;
     private EditText email_edit_text;
     private Button email_confirm_button;
+    private TextView alreadyHaveAccount;
 
     public UserEmailFragment() {
         // Required empty public constructor
@@ -92,11 +94,19 @@ public class UserEmailFragment extends Fragment {
 
         this.email_edit_text = (EditText) v.findViewById(R.id.email_edit_text);
         this.email_confirm_button = (Button) v.findViewById(R.id.confirm_email_button);
+        this.alreadyHaveAccount = (TextView) v.findViewById(R.id.already_have_account);
 
         this.email_confirm_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 validateEmail(v);
+            }
+        });
+
+        this.alreadyHaveAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_userEmail_to_loginFragment);
             }
         });
 

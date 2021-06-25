@@ -13,6 +13,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,12 +34,32 @@ dependencies {
     // viewmodel and livedata /app/build.gradle dependencies
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
 
+    def room_version = "2.3.0"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // optional - RxJava2 support for Room
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+    // optional - RxJava3 support for Room
+    implementation "androidx.room:room-rxjava3:$room_version"
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation "androidx.room:room-guava:$room_version"
+
+    // optional - Test helpers
+    testImplementation "androidx.room:room-testing:$room_version"
+
     // network
     implementation 'com.squareup.retrofit2:retrofit:2.0.1'
     implementation 'com.google.code.gson:gson:2.6.2'
     implementation 'com.squareup.okhttp3:okhttp:3.1.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.0.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+
+    // решает непонятную ошибку
+    implementation 'com.android.support:multidex:1.0.3'
 
     // navigation
     implementation 'androidx.navigation:navigation-fragment:2.3.1'

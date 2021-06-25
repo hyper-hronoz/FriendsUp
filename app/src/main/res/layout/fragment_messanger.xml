@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingHorizontal="16dp"
-    tools:context=".fragments.main.MessangerFragment">
+    tools:context=".fragments.chat.ChatsFragment">
 
     <TextView
         android:id="@+id/noMessages"

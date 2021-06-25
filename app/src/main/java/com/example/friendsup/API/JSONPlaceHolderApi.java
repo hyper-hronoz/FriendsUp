@@ -1,14 +1,13 @@
 package com.example.friendsup.API;
 
 import com.example.friendsup.models.Chat;
-import com.example.friendsup.models.NetworkServiceResponse;
+import com.example.friendsup.models.JwtToken;
 import com.example.friendsup.models.RegisteredUser;
 import com.example.friendsup.models.User;
 
 import java.util.List;
 
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -21,10 +20,10 @@ import retrofit2.http.Part;
 
 public interface JSONPlaceHolderApi {
     @POST("/auth/registration")
-    Call<NetworkServiceResponse> registerUser(@Body User user);
+    Call<JwtToken> registerUser(@Body User user);
 
     @POST("/auth/login")
-    Call<NetworkServiceResponse> loginUser(@Body User user);
+    Call<JwtToken> loginUser(@Body User user);
 //
     @GET("/user-data/user")
     Call<RegisteredUser> getCurrentUserData(@Header("Authorization") String token);
@@ -49,7 +48,7 @@ public interface JSONPlaceHolderApi {
     Call<List<Chat>> getUsersChatRooms(@Header("Authorization") String token);
 
     @POST("/messages/room")
-    Call<NetworkServiceResponse> createChatRoom( @Header("Authorization") String token, @Body RegisteredUser registeredUser);
+    Call<JwtToken> createChatRoom(@Header("Authorization") String token, @Body RegisteredUser registeredUser);
 
     @Multipart
     @POST("/user-data/upload-image")

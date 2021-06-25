@@ -1,9 +1,6 @@
 package com.example.friendsup.fragments.main;
 
 import android.animation.ValueAnimator;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,27 +15,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.Toolbar;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.example.friendsup.API.JSONPlaceHolderApi;
-import com.example.friendsup.ChatActivity;
 import com.example.friendsup.MainActivity;
 import com.example.friendsup.R;
-import com.example.friendsup.models.NetworkServiceResponse;
+import com.example.friendsup.ViewModel.NominationViewModel;
 import com.example.friendsup.models.RegisteredUser;
-import com.example.friendsup.repository.Network;
 import com.example.friendsup.utils.OnSwipeTouchListener;
-import com.google.gson.GsonBuilder;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 //import com.example.friendsup.utils.OnSwipeTouchListener;
 
@@ -104,33 +94,17 @@ public class NominationsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getRandomUser();
+    }
+
     private void getRandomUser() {
+        NominationViewModel model = new ViewModelProvider(getActivity()).get(NominationViewModel.class);
 
-
-        JSONPlaceHolderApi jsonPlaceHolderApi = Network.getJSONPalaceHolderAPI();
-
-        Call<RegisteredUser> call = jsonPlaceHolderApi.findUser("Bearer " + Network.getJWT(getActivity().getApplicationContext()));
-
-        call.enqueue(new Callback<RegisteredUser>() {
-            private Context context = getActivity().getApplicationContext();
-
-            @Override
-            public void onResponse(Call<RegisteredUser> call, Response<RegisteredUser> response) {
-                Log.d("Search status code is", String.valueOf(response.code()));
-                Log.d("Search response body is", new GsonBuilder().setPrettyPrinting().create().toJson(response.body()));
-                if (response.code() == 200) {
-                    setCurrentUserData(response.body());
-                } else if (response.code() == 500) {
-                    Toast.makeText(context, "User cannot be found internal server error", Toast.LENGTH_SHORT).show();
-                } else {
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RegisteredUser> call, Throwable t) {
-                Log.e("Search nominat error", t.getMessage());
-                Toast.makeText(context, "Connection error", Toast.LENGTH_SHORT).show();
-            }
+        model.getUser().observe(getActivity(), user -> {
+            setCurrentUserData(user);
         });
     }
 
@@ -148,7 +122,7 @@ public class NominationsFragment extends Fragment {
         this.chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startChat(registeredUser);
+//                startChat(registeredUser);
             }
         });
     }
@@ -205,38 +179,36 @@ public class NominationsFragment extends Fragment {
             }
         });
 
-        getRandomUser();
-
         return v;
         // Inflate the layout for this fragment
     }
 
-    private void startChat(RegisteredUser registeredUser) {
-
-        JSONPlaceHolderApi jsonPlaceHolderApi = Network.getJSONPalaceHolderAPI();
-
-        Call<NetworkServiceResponse> call = jsonPlaceHolderApi.createChatRoom("Bearer " + Network.getJWT(getActivity().getApplicationContext()), registeredUser);
-
-        call.enqueue(new Callback<NetworkServiceResponse>() {
-            private Context context = getActivity().getApplicationContext();
-
-            @Override
-            public void onResponse(Call<NetworkServiceResponse> call, Response<NetworkServiceResponse> response) {
-                Toast.makeText(getActivity().getApplicationContext(), "All done", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity().getApplicationContext(), ChatActivity.class);
-                System.out.println("id is: " + registeredUser.getId());
-                intent.putExtra(getActivity().getApplicationContext().getString(R.string.chatActivity), registeredUser.getId());
-                getActivity().startActivity(intent);
-            }
-
-            @Override
-            public void onFailure(Call<NetworkServiceResponse> call, Throwable t) {
-                Log.e("Search nominat error", t.getMessage());
-                Toast.makeText(context, "Connection error", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
+//    private void startChat(RegisteredUser registeredUser) {
+//
+//        JSONPlaceHolderApi jsonPlaceHolderApi = Network.getJSONPalaceHolderAPI();
+//
+//        Call<JwtToken> call = jsonPlaceHolderApi.createChatRoom("Bearer " + Network.getJWT(getActivity().getApplicationContext()), registeredUser);
+//
+//        call.enqueue(new Callback<JwtToken>() {
+//            private Context context = getActivity().getApplicationContext();
+//
+//            @Override
+//            public void onResponse(Call<JwtToken> call, Response<JwtToken> response) {
+//                Toast.makeText(getActivity().getApplicationContext(), "All done", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(getActivity().getApplicationContext(), ChatActivity.class);
+//                System.out.println("id is: " + registeredUser.getId());
+//                intent.putExtra(getActivity().getApplicationContext().getString(R.string.chatActivity), registeredUser.getId());
+//                getActivity().startActivity(intent);
+//            }
+//
+//            @Override
+//            public void onFailure(Call<JwtToken> call, Throwable t) {
+//                Log.e("Search nominat error", t.getMessage());
+//                Toast.makeText(context, "Connection error", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//    }
 
     private void hideProfileImage() {
         if (!this.isAnimated) {

@@ -1,4 +1,4 @@
-package com.example.friendsup.fragments.registration;
+package com.example.friendsup.fragments.authorization.registration;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,20 +14,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
-import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.R;
-import com.example.friendsup.models.NetworkServiceResponse;
+import com.example.friendsup.models.JwtToken;
 import com.example.friendsup.models.User;
 import com.example.friendsup.repository.Network;
 import com.example.friendsup.utils.FormValidator;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -111,22 +109,25 @@ public class UserPasswordFragment extends Fragment {
             editor.commit();
 //            Navigation.findNavController(v).navigate(R.id.userPassword);
 
-            Call<NetworkServiceResponse> call = Network.getJSONPalaceHolderAPI().registerUser(user);
+            Call<JwtToken> call = Network.getJSONPalaceHolderAPI().registerUser(user);
 
-            call.enqueue(new Callback<NetworkServiceResponse>() {
+            call.enqueue(new Callback<JwtToken>() {
                 @Override
-                public void onResponse(Call<NetworkServiceResponse> call, Response<NetworkServiceResponse> response) {
+                public void onResponse(Call<JwtToken> call, Response<JwtToken> response) {
                     System.out.println(response);
                     if (response.code() == 409) {
-                    } else if (response.code() == 400) {
+                    } else if (response.code() == 401) {
                     } else if (response.code() == 200) {
                         Toast.makeText(getActivity().getApplicationContext(), response.message().toString(), Toast.LENGTH_LONG).show();
-                        String jwt = new GsonBuilder().setPrettyPrinting().create().toJson(response.body().getResponse()).replaceAll("^.|.$", "");
-                        SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        Log.d("JWT toke from regist", jwt);
-                        editor.putString(getString(R.string.JWTToken), jwt);
-                        editor.commit();
+//                        String jwt = new GsonBuilder().setPrettyPrinting().create().toJson(response.body().getResponse()).replaceAll("^.|.$", "");
+
+                        Navigation.findNavController(v).navigate(R.id.action_userPassword_to_emailConfirmationFragment);
+
+//                        SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = sharedPref.edit();
+//                        Log.d("JWT toke from regist", jwt);
+//                        editor.putString(getString(R.string.JWTToken), jwt);
+//                        editor.commit();
 
                         if (Build.VERSION.SDK_INT >= 11) {
                             getActivity().recreate();
@@ -139,7 +140,7 @@ public class UserPasswordFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<NetworkServiceResponse> call, Throwable t) {
+                public void onFailure(Call<JwtToken> call, Throwable t) {
                     Log.e("Sign up failre", t.getMessage());
                 }
             });

@@ -1,4 +1,4 @@
-package com.example.friendsup.fragments.registration;
+package com.example.friendsup.fragments.authorization.registration;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -40,6 +41,7 @@ public class UserNameSernameFragment extends Fragment {
     private Button buttonNext;
     private RadioGroup selectGenderRadioGroup;
     private String gender = null;
+    private TextView alreadyHaveAccount;
 
     public UserNameSernameFragment() {
         // Required empty public constructor
@@ -122,6 +124,16 @@ public class UserNameSernameFragment extends Fragment {
 
         this.selectGenderRadioGroup = (RadioGroup) v.findViewById(R.id.select_gender_radio_group);
 
+        this.alreadyHaveAccount = (TextView) v.findViewById(R.id.already_have_account);
+
+        this.alreadyHaveAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_userNameSername_to_loginFragment);
+            }
+        });
+
+
         this.selectGenderRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             @Override
@@ -150,6 +162,7 @@ public class UserNameSernameFragment extends Fragment {
                 }
             }
         });
+
 
         return v;
     }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="40dp"
-    tools:context=".fragments.login.LoginFragment"
+    tools:context=".fragments.authorization.login.LoginFragment"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar

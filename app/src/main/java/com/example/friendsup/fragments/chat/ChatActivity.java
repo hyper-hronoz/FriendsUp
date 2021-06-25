@@ -1,4 +1,4 @@
-package com.example.friendsup;
+package com.example.friendsup.fragments.chat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.friendsup.BaseActivity;
+import com.example.friendsup.R;
 import com.example.friendsup.models.ImageMessage;
 import com.example.friendsup.models.MessengerPagination;
 import com.example.friendsup.models.TextMessage;

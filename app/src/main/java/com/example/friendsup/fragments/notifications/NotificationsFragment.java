@@ -1,4 +1,4 @@
-package com.example.friendsup.fragments.main;
+package com.example.friendsup.fragments.notifications;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,10 +8,6 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.friendsup.R;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.

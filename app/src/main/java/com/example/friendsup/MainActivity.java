@@ -16,12 +16,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.friendsup.ViewModel.ChatsViewModel;
-import com.example.friendsup.fragments.main.MessangerFragment;
+import com.example.friendsup.fragments.chat.ChatsFragment;
 import com.example.friendsup.fragments.main.NominationsFragment;
-import com.example.friendsup.fragments.main.NotificationsFragment;
+import com.example.friendsup.fragments.notifications.NotificationsFragment;
 import com.example.friendsup.fragments.main.ProfileFragment;
 import com.example.friendsup.repository.Network;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -75,7 +73,7 @@ public class MainActivity extends BaseActivity {
                                 R.anim.fragment_exit_animation_from_left_to_right
                         );
                         this.currentFragment = "MESSAGES";
-                        fragment = new MessangerFragment();
+                        fragment = new ChatsFragment();
                         break;
 
                     case R.id.bottom_navigation_search:
@@ -186,6 +184,9 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState != null) {
             int selectedItemId = savedInstanceState.getInt("SelectedItemId");
             System.out.println("Selected id is:" + selectedItemId);
+            if (selectedItemId == 0) {
+                return;
+            }
             this.bottomNavigationView.setSelectedItemId(selectedItemId);
         }
     }

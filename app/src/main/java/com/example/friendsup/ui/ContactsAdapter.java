@@ -12,10 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.friendsup.ChatActivity;
+import com.example.friendsup.fragments.chat.ChatActivity;
 import com.example.friendsup.R;
 import com.example.friendsup.models.Chat;
-import com.example.friendsup.models.Contact;
 
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.contatic_item, parent, false);
+        View contactView = inflater.inflate(R.layout.contact_item, parent, false);
 
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(contactView);

@@ -1,11 +1,24 @@
 package com.example.friendsup.models;
 
-import com.google.gson.annotations.SerializedName;
+//import androidx.annotation.NonNull;
+//import androidx.room.ColumnInfo;
+//import androidx.room.Entity;
+//import androidx.room.PrimaryKey;
+//
+//import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
+//@Entity
 public class Chat {
+
+//    @NonNull
+//    @PrimaryKey
+//    @SerializedName("_id")
+    public String id;
+
+//    @ColumnInfo(name = "username")
     public String username;
+
+//    @ColumnInfo(name = "userPhoto")
     public String userPhoto;
 
     public Chat(String username, String userPhoto, String id) {
@@ -37,14 +50,5 @@ public class Chat {
     public String getId() {
         return id;
     }
-
-    public Chat(String username, String id) {
-        this.username = username;
-        this.id = id;
-    }
-
-    @SerializedName("_id")
-    public String id;
-
 
 }

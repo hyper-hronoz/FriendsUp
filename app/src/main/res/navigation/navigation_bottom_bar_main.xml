@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/bottom_navigation_notifications"
-        android:name="com.example.friendsup.fragments.main.NotificationsFragment"
+        android:name="com.example.friendsup.fragments.notifications.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" >
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/bottom_navigation_messanger"
-        android:name="com.example.friendsup.fragments.main.MessangerFragment"
+        android:name="com.example.friendsup.fragments.chat.ChatsFragment"
         android:label="fragment_messanger"
         tools:layout="@layout/fragment_messanger" >
         <action

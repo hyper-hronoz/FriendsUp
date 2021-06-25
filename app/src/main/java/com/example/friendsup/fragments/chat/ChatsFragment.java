@@ -1,14 +1,10 @@
-package com.example.friendsup.fragments.main;
+package com.example.friendsup.fragments.chat;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,27 +13,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.R;
 import com.example.friendsup.ViewModel.ChatsViewModel;
 import com.example.friendsup.models.Chat;
-import com.example.friendsup.repository.Network;
 import com.example.friendsup.ui.ContactsAdapter;
-import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MessangerFragment#newInstance} factory method to
+ * Use the {@link ChatsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MessangerFragment extends Fragment {
+public class ChatsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,7 +41,7 @@ public class MessangerFragment extends Fragment {
 
     private TextView haveNoMessages;
 
-    public MessangerFragment() {
+    public ChatsFragment() {
         // Required empty public constructor
     }
 
@@ -66,8 +54,8 @@ public class MessangerFragment extends Fragment {
      * @return A new instance of fragment Messanger.
      */
     // TODO: Rename and change types and number of parameters
-    public static MessangerFragment newInstance(String param1, String param2) {
-        MessangerFragment fragment = new MessangerFragment();
+    public static ChatsFragment newInstance(String param1, String param2) {
+        ChatsFragment fragment = new ChatsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

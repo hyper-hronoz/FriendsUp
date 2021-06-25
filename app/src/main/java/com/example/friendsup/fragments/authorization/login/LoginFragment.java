@@ -1,8 +1,6 @@
-package com.example.friendsup.fragments.login;
+package com.example.friendsup.fragments.authorization.login;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,14 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
-import com.example.friendsup.API.JSONPlaceHolderApi;
 import com.example.friendsup.MainActivity;
 import com.example.friendsup.R;
-import com.example.friendsup.models.NetworkServiceResponse;
+import com.example.friendsup.models.JwtToken;
 import com.example.friendsup.models.User;
 import com.example.friendsup.repository.Network;
 import com.example.friendsup.repository.NetworkConfig;
@@ -26,7 +25,6 @@ import com.google.gson.GsonBuilder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +48,7 @@ public class LoginFragment extends Fragment {
 
     private String email;
     private String password;
+    private TextView doNotHaveAccount;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -89,27 +88,42 @@ public class LoginFragment extends Fragment {
 
         User user = new User(this.email, this.password);
 
-        Call<NetworkServiceResponse> call = Network.getJSONPalaceHolderAPI().loginUser(user);
+        Call<JwtToken> call = Network.getJSONPalaceHolderAPI().loginUser(user);
 
         System.out.println(NetworkConfig.BASE_URL);
 
-        call.enqueue(new Callback<NetworkServiceResponse>() {
+        call.enqueue(new Callback<JwtToken>() {
             @Override
-            public void onResponse(Call<NetworkServiceResponse> call, Response<NetworkServiceResponse> response) {
+            public void onResponse(Call<JwtToken> call, Response<JwtToken> response) {
                 Log.d("Login status code is", String.valueOf(response.code()));
                 Log.d("Login response body is", String.valueOf(response.body()));
+
+                System.out.println("Message is: " + response.message());
+
                 if (response.code() == 400) {
                     Toast.makeText(getActivity().getApplicationContext(), "Hei incorrect login or password", Toast.LENGTH_LONG).show();
-                } else {
-                    Network.setJWT(getActivity().getApplicationContext(), new GsonBuilder().setPrettyPrinting().create().toJson(response.body().getResponse()).replaceAll("^.|.$", ""));
-                    Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
-                    getActivity().finish();
-                    startActivity(intent);
+                    return;
                 }
+                if (response.code() == 403) {
+                    Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_emailConfirmationFragment);
+                    return;
+                }
+                if (response.code() == 404) {
+                    Toast.makeText(getActivity().getApplicationContext(), "User is not exists", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                String jwt = new GsonBuilder().setPrettyPrinting().create().toJson(response.body().getToken()).replaceAll("^.|.$", "");
+                if (jwt == "" || jwt == null) {
+                    return;
+                }
+                Network.setJWT(getActivity().getApplicationContext(), jwt);
+                Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                getActivity().finish();
+                startActivity(intent);
             }
 
             @Override
-            public void onFailure(Call<NetworkServiceResponse> call, Throwable t) {
+            public void onFailure(Call<JwtToken> call, Throwable t) {
                 Toast.makeText(getActivity().getApplicationContext(), "Connection error try again leter", Toast.LENGTH_LONG).show();
                 Log.e("Login error:", t.getMessage());
             }
@@ -124,6 +138,13 @@ public class LoginFragment extends Fragment {
                 login(v);
             }
         });
+
+        this.doNotHaveAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_userNameSername);
+            }
+        });
     }
 
     @Override
@@ -135,6 +156,7 @@ public class LoginFragment extends Fragment {
         this.editTextLogin = v.findViewById(R.id.email_edit_text);
         this.editTextPassword = v.findViewById(R.id.password_edit_text);
         this.buttonLogin = v.findViewById(R.id.loginButton);
+        this.doNotHaveAccount = v.findViewById(R.id.dont_have_account);
 
         listeners();
 
