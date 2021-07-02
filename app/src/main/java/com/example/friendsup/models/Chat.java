@@ -7,12 +7,14 @@ package com.example.friendsup.models;
 //
 //import com.google.gson.annotations.SerializedName;
 
+import com.google.gson.annotations.SerializedName;
+
 //@Entity
 public class Chat {
 
 //    @NonNull
 //    @PrimaryKey
-//    @SerializedName("_id")
+    @SerializedName("_id")
     public String id;
 
 //    @ColumnInfo(name = "username")

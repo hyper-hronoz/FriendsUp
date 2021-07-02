@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="heading">
+    <style name="heading_style">
         <item name="android:textColor">@color/dark</item>
         <item name="android:textSize">25sp</item>
         <item name="android:textStyle">bold</item>
@@ -8,7 +8,7 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="registration_button">
+    <style name="registration_button_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentEnd">true</item>
@@ -16,17 +16,19 @@
         <item name="android:layout_centerHorizontal">true</item>
     </style>
 
-    <style name="registration_login_edit_text">
+    <style name="default_edit_text_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/edit_text_login_sign_up</item>
         <item name="android:paddingLeft">20dp</item>
+        <item name="android:lines">1</item>
     </style>
 
-    <style name="roundedImageViewRounded">
+    <style name="rounded_image_style">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
-    </style>    <!--    <style name="gender_heading_textView">-->
+    </style>
+<!--    <style name="gender_heading_textView">-->
 <!--        <item name="android:layout_width">wrap_content</item>-->
 <!--        <item name="android:layout_height">wrap_content</item>-->
 <!--        <item name="android:layout_marginTop">68dp</item>-->

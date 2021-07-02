@@ -31,10 +31,7 @@ public class MainActivity extends BaseActivity {
     private ImageView toolbarNavigationProfile;
 
     private void logout() {
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.clear();
-        editor.commit();
+        Network.deleteJWT(getApplicationContext());
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         finish();
@@ -126,9 +123,11 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setProfileImageFromGallery(String uriString) {
+        ImageView profile = findViewById(R.id.main_activity__toolbar_profile);
         if (uriString != "") {
-            ImageView profile = findViewById(R.id.main_activity__toolbar_profile);
             profile.setImageURI(Uri.parse(uriString));
+        } else {
+             profile.setImageDrawable(getResources().getDrawable(R.drawable.default_photo));
         }
     }
 
@@ -196,6 +195,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        System.out.println("Activity jwt is: " + Network.getJWT(getApplicationContext()));
 
         if (Network.getJWT(getApplicationContext()) != "") {
             setContentView(R.layout.activity_main_main);

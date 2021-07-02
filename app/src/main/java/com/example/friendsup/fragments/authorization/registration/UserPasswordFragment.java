@@ -116,18 +116,13 @@ public class UserPasswordFragment extends Fragment {
                 public void onResponse(Call<JwtToken> call, Response<JwtToken> response) {
                     System.out.println(response);
                     if (response.code() == 409) {
-                    } else if (response.code() == 401) {
+                    } else if (response.code() == 422) {
+                        Toast.makeText(getActivity().getApplicationContext(), "Пользователь с таким email уже существует", Toast.LENGTH_LONG).show();
                     } else if (response.code() == 200) {
+
                         Toast.makeText(getActivity().getApplicationContext(), response.message().toString(), Toast.LENGTH_LONG).show();
-//                        String jwt = new GsonBuilder().setPrettyPrinting().create().toJson(response.body().getResponse()).replaceAll("^.|.$", "");
 
                         Navigation.findNavController(v).navigate(R.id.action_userPassword_to_emailConfirmationFragment);
-
-//                        SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
-//                        SharedPreferences.Editor editor = sharedPref.edit();
-//                        Log.d("JWT toke from regist", jwt);
-//                        editor.putString(getString(R.string.JWTToken), jwt);
-//                        editor.commit();
 
                         if (Build.VERSION.SDK_INT >= 11) {
                             getActivity().recreate();

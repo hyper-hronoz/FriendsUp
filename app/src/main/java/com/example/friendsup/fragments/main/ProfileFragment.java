@@ -24,7 +24,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.example.friendsup.API.JSONPlaceHolderApi;
+import com.example.friendsup.api.JSONPlaceHolderApi;
 import com.example.friendsup.R;
 import com.example.friendsup.models.RegisteredUser;
 import com.example.friendsup.repository.Network;
@@ -45,7 +45,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * A simple {@link Fragment} subclass.

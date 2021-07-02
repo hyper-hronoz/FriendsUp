@@ -19,6 +19,5 @@ public class ImageMessage {
 
     public String getImage() {
         return image;
-
     }
 }

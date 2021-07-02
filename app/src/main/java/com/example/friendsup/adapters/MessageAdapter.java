@@ -1,4 +1,4 @@
-package com.example.friendsup.ui;
+package com.example.friendsup.adapters;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

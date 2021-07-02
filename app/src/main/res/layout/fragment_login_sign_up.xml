@@ -36,7 +36,7 @@
             android:layout_marginBottom="18dp"
             android:background="@drawable/login_sign_up_button_none_filled"
             android:text="Sign up "
-            style="@style/registration_button"
+            style="@style/registration_button_style"
             android:textColor="@color/blue"
             app:backgroundTint="#FFFFFF" />
 
@@ -44,7 +44,7 @@
             android:id="@+id/loginButton"
             android:layout_above="@+id/terms"
             android:layout_marginBottom="27dp"
-            style="@style/registration_button"
+            style="@style/registration_button_style"
             android:background="@drawable/login_sign_up_button_filled"
             android:text="Login"
             android:textColor="@color/white"

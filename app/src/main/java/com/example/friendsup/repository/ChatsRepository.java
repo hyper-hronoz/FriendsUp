@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.friendsup.API.JSONPlaceHolderApi;
+import com.example.friendsup.api.JSONPlaceHolderApi;
 import com.example.friendsup.models.Chat;
 import com.example.friendsup.models.JwtToken;
 import com.example.friendsup.models.RegisteredUser;
@@ -17,14 +17,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChatsRepository {
-    private static MutableLiveData<List<Chat>> chats;
+    private MutableLiveData<List<Chat>> chats;
 
 
     public ChatsRepository(MutableLiveData<List<Chat>> chats) {
         this.chats = chats;
     }
 
-    public static void getUserChatsFromRemotes() {
+    public void getUserChatsFromRemotes() {
 
         Call<List<Chat>> call = Network.getJSONPalaceHolderAPI().getUsersChatRooms("Bearer " + Network.getJWT());
 

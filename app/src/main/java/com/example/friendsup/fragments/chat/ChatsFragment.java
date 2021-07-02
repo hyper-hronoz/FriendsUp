@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendsup.R;
-import com.example.friendsup.ViewModel.ChatsViewModel;
+import com.example.friendsup.viewmodel.ChatsViewModel;
 import com.example.friendsup.models.Chat;
-import com.example.friendsup.ui.ContactsAdapter;
+import com.example.friendsup.adapters.ContactsAdapter;
 
 import java.util.List;
 
@@ -93,6 +93,9 @@ public class ChatsFragment extends Fragment {
             if (chats.size() == 0) {
                 return;
             }
+            for (Chat chat : chats) {
+                System.out.println(chat.getId());
+            }
             setCurrentUserChatRooms(chats);
         });
     }
@@ -102,11 +105,8 @@ public class ChatsFragment extends Fragment {
             this.haveNoMessages.setVisibility(View.GONE);
         }
 
-        // Create adapter passing in the sample user data
         ContactsAdapter adapter = new ContactsAdapter(chats, getActivity());
-        // Attach the adapter to the recyclerview to populate items
         this.rvContacts.setAdapter(adapter);
-        // Set layout manager to position the items
         this.rvContacts.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         System.out.println(chats);

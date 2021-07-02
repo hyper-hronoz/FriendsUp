@@ -1,4 +1,4 @@
-package com.example.friendsup.API;
+package com.example.friendsup.api;
 
 import com.example.friendsup.models.Chat;
 import com.example.friendsup.models.JwtToken;
@@ -43,6 +43,9 @@ public interface JSONPlaceHolderApi {
 //    @GET("/action/liked")
 //    Call<RegisteredUsers> getLikedUsers(@Header("Authorization") String token);
 //
+
+//    @POST("/auth/confirm")
+//    Call<User> confirmEmail(User user);
 
     @GET("/messages/rooms")
     Call<List<Chat>> getUsersChatRooms(@Header("Authorization") String token);

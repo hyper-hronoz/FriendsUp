@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/password_heading"
-            style="@style/heading"
+            style="@style/heading_style"
             android:layout_marginBottom="43dp"
             android:text="Login"
             android:textColor="@color/dark" />
@@ -32,14 +32,14 @@
 
         <EditText
             android:id="@+id/email_edit_text"
-            style="@style/registration_login_edit_text"
+            style="@style/default_edit_text_style"
             android:layout_below="@+id/password_heading"
             android:layout_marginBottom="16dp"
             android:hint="Email"/>
 
         <EditText
             android:id="@+id/password_edit_text"
-            style="@style/registration_login_edit_text"
+            style="@style/default_edit_text_style"
             android:layout_below="@+id/email_edit_text"
             android:hint="Password"
             android:inputType="textPassword" />
@@ -57,7 +57,7 @@
 
         <Button
             android:id="@+id/loginButton"
-            style="@style/registration_button"
+            style="@style/registration_button_style"
             android:layout_below="@+id/forgot_password"
             android:background="@drawable/login_sign_up_button_filled"
             android:text="Next"

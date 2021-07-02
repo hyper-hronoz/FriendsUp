@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.example.friendsup.API.JSONPlaceHolderApi;
+import com.example.friendsup.api.JSONPlaceHolderApi;
 import com.example.friendsup.R;
 
 import retrofit2.Retrofit;
@@ -49,11 +49,22 @@ public class Network {
         return JWT;
     }
 
+    public static void deleteJWT(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(context.getString(R.string.JWTToken), "");
+        JWT = "";
+        editor.clear();
+        editor.commit();
+        getJWT();
+    }
+
     public static void setJWT(Context context, String jwt) {
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Log.d("JWT toke from login", jwt);
         editor.putString(context.getString(R.string.JWTToken), jwt);
         editor.commit();
+        JWT = jwt;
     }
 }

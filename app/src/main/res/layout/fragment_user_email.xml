@@ -15,7 +15,7 @@
         <TextView
             android:id="@+id/email_heading"
             android:text="What's your email?"
-            style="@style/heading"
+            style="@style/heading_style"
             android:textColor="@color/dark"
             android:layout_marginBottom="43dp"
             />
@@ -25,14 +25,14 @@
             android:id="@+id/email_edit_text"
             android:hint="Email"
             android:layout_below="@+id/email_heading"
-            style="@style/registration_login_edit_text"
+            style="@style/default_edit_text_style"
             android:layout_marginBottom="43dp"
             />
 
 
         <Button
             android:id="@+id/confirm_email_button"
-            style="@style/registration_button"
+            style="@style/registration_button_style"
             android:layout_below="@+id/email_edit_text"
             android:background="@drawable/login_sign_up_button_filled"
             android:visibility="visible"

@@ -1,8 +1,9 @@
-package com.example.friendsup.ui;
+package com.example.friendsup.adapters;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.friendsup.fragments.chat.ChatActivity;
+import com.bumptech.glide.Glide;
+import com.example.friendsup.ChatActivity;
 import com.example.friendsup.R;
 import com.example.friendsup.models.Chat;
 
@@ -52,10 +54,17 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         Chat contact = contacts.get(position);
 
+        ImageView profileImage = holder.contactAvatar;
         // Set item views based on your views and data model
         TextView nameTextView = holder.nameTextView;
         nameTextView.setText(contact.getUsername());
 
+        try {
+            Glide.with(activity.getApplicationContext()).load(contact.getUserPhoto()).into(profileImage);
+        } catch (Exception ex) {
+            profileImage.setImageDrawable(activity.getResources().getDrawable(R.drawable.default_photo));
+            Log.e("Exception", ex.toString());
+        }
 
         TextView massageTextView = holder.lastMessage;
 

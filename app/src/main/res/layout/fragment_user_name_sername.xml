@@ -15,7 +15,7 @@
         <TextView
             android:id="@+id/name_sername_heading"
             android:text="What's your name?"
-            style="@style/heading"
+            style="@style/heading_style"
             android:textColor="@color/dark"
             android:layout_marginBottom="43dp"
             />
@@ -25,7 +25,7 @@
             android:id="@+id/name_edit_text"
             android:hint="Name"
             android:layout_below="@+id/name_sername_heading"
-            style="@style/registration_login_edit_text"
+            style="@style/default_edit_text_style"
             android:layout_marginBottom="16dp"
              />
 
@@ -33,14 +33,14 @@
             android:hint="Last name"
             android:id="@+id/sername_edit_text"
             android:layout_below="@+id/name_edit_text"
-            style="@style/registration_login_edit_text"
+            style="@style/default_edit_text_style"
             android:layout_marginBottom="24dp"
             />
 
 
         <TextView
             android:id="@+id/gender_heading"
-            style="@style/heading"
+            style="@style/heading_style"
             android:layout_below="@+id/sername_edit_text"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
@@ -82,7 +82,7 @@
 
         <Button
             android:id="@+id/confirm_sername_name"
-            style="@style/registration_button"
+            style="@style/registration_button_style"
             android:layout_below="@+id/select_gender_radio_group"
             android:background="@drawable/login_sign_up_button_filled"
             android:text="Next"
