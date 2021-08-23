@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.friendsup.models.ImageMessage;
 import com.example.friendsup.models.MessengerPagination;
 import com.example.friendsup.models.TextMessage;
+import com.example.friendsup.repository.NetworkConfig;
 import com.example.friendsup.ui.MessageAdapter;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -43,7 +44,6 @@ import io.socket.emitter.Emitter;
 public class ChatActivity extends BaseActivity implements TextWatcher {
 
     private String chatterId;
-    private String SERVER_PATH = "ws://192.168.0.15:80";
     private EditText messageEdit;
     private View sendBtn, pickImgBtn;
     private RecyclerView recyclerView;
@@ -190,7 +190,7 @@ public class ChatActivity extends BaseActivity implements TextWatcher {
     private void initiateSocketConnection() {
         System.out.println("initilizing socket connection");
         try {
-            socket = IO.socket("http://192.168.0.15:80");
+            socket = IO.socket(NetworkConfig.BASE_URL);
             socket.connect();
 
             SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.JWTTokenSharedPreferencesKey), Context.MODE_PRIVATE);

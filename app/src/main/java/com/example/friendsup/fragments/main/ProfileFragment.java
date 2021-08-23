@@ -161,7 +161,7 @@ public class ProfileFragment extends Fragment {
 
                     this.uploadProfileImage(file);
 
-                    this.saveImageToGallery(bitmap);
+//                    this.saveImageToGallery(bitmap);
                     this.getProfileImageFromGallery();
 
                     System.out.println("file lenght is: " + file.length());
@@ -225,13 +225,17 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFailure(Call call, Throwable t) {
                 System.out.println("error " + t.getMessage());
-                Toast.makeText(context, "Server connection error check your internet connection and try again later", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Server connection error check your internet connection and try again later", Toast.LENGTH_SHORT).show();
+                updateCurrentData();
+                getCurrentUserData();
             }
         });
     }
 
     private void updateCurrentData() {
         RegisteredUser registeredUser = new RegisteredUser(this.nominationHeadingEditText.getText().toString());
+        this.nominationAboutTextView.setText(nominationAboutEditText.getText());
+        this.nominationHeadingTextView.setText(nominationHeadingEditText.getText());
         registeredUser.setAbout(this.nominationAboutEditText.getText().toString());
         sendNewUserData(registeredUser);
     }
